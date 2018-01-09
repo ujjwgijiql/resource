@@ -1,10 +1,10 @@
 # resource
-。比较好的私人git仓库
-    。BitBucket：https://bitbucket.org/
-    。开源中国：http://git.oschina.net/
-    。GitCafe：https://gitcafe.com/
-    。GitLab：http://www.gitlab.org/
-    。coding：https://coding.net/
+。比较好的私人git仓库</br>
+    。BitBucket：https://bitbucket.org/</br>
+    。开源中国：http://git.oschina.net/</br>
+    。GitCafe：https://gitcafe.com/</br>
+    。GitLab：http://www.gitlab.org/</br>
+    。coding：https://coding.net/</br>
 
 
 
