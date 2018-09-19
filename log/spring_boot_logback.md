@@ -16,8 +16,22 @@ springProfile标签可以配置日志文件的任何标签位置，然后可以�
 </springProfile>
 ```    
 * springProperty标签    
-  *该`<springProperty>`标签允许我们从Spring中显示属性，Environment 以便在Logback中使用。如果你想引用 application.properties中配置的属性，这将非常有用    
-  *标签的工作方式与Logback的标准 <property> 标签类似，但不是直接value 指定source属性（从Environment）指定。scope 如果需要将属性存储在local范围之外的其他位置，则可以使用该属性。如果您需要一个后备值，以防该属性未设置，则Environment可以使用该defaultValue属性。
+  * 该`<springProperty>`标签允许我们从Spring中显示属性，Environment 以便在Logback中使用。如果你想引用 application.properties中配置的属性，这将非常有用    
+  * 标签的工作方式与Logback的标准 <property> 标签类似，但不是直接value 指定source属性（从Environment）指定。scope 如果需要将属性存储在local范围之外的其他位置，则可以使用该属性。如果您需要一个后备值，以防该属性未设置，则Environment可以使用该defaultValue属性。    
+&nbsp;    
+
+application.properties
+```properties
+# 日志配置
+logging.config=classpath:logback-spring.xml
+logging.path=/opt/logs/spring-boot
+log.max.history=30
+log.immediate.flush=true
+
+# DEBUG INFO WARN ERROR
+log.leveling=INFO
+```    
+logback-spring.xml
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/2002/xmlspec/dtd/2.10/xmlspec.dtd">
