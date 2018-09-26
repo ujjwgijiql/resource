@@ -27,3 +27,27 @@ myservice stoped........................................
 passed in option /etc/init.d/mysvc xxx
 myservice not supported option........................................
 ```
+
+&nbsp;    
+# CentOS如何查看端口是被哪个应用/进程占用
+有时启动应用时会发现端口已经被占用，或者是感觉有些端口自己没有使用却发现是打开的。这时我们希望知道是哪个应用/进程在使用该端口。    
+
+CentOS下可以用netstat或者lsof查看，Windows下也可以用netstat查看，不过参数会不同
+
+Linux:
+netstat -nap           # 会列出所有正在使用的端口及关联的进程/应用    
+lsof -i :portnumber    # portnumber要用具体的端口号代替，可以直接列出该端口听使用进程/应用    
+
+一、检查端口被哪个进程占用    
+检查88端口被哪个进程占用    
+```shell
+netstat -lnp | grep 88
+```    
+二、查看进程的详细信息   
+```shell
+ps 1777
+```    
+三、杀掉进程    
+```shell
+kill -9 1777
+```    
