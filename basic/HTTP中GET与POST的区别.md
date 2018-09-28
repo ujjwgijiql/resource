@@ -23,13 +23,24 @@ GET和POST是HTTP请求的两种基本方法，要说它们的区别，接触过
 * GET参数通过URL传递，POST放在Request body中。    
 （本标准答案参考自w3schools）     
 &nbsp;   
- “很遗憾，这不是我们要的回答!”    
+“很遗憾，这不是我们要的回答!”    
 &nbsp;    
-
+![breakdown](https://github.com/zhang-jh/resource/blob/master/basic/images/breakdown.png) 
+&nbsp;    
 请告诉我真相。。。    
 &nbsp;   
 如果我告诉你GET和POST本质上没有区别你信吗？     
 &nbsp;   
 让我们扒下GET和POST的外衣，坦诚相见吧！    
 &nbsp;   
-
+![zhuangB](https://github.com/zhang-jh/resource/blob/master/basic/images/zhuangB.png) 
+&nbsp;   
+&nbsp;   
+GET和POST是什么？HTTP协议中的两种发送请求的方法。    
+&nbsp;   
+HTTP是什么？HTTP是基于TCP/IP的关于数据如何在万维网中如何通信的协议。    
+&nbsp;   
+HTTP的底层是TCP/IP。所以GET和POST的底层也是TCP/IP，也就是说，GET/POST都是TCP链接。GET和POST能做的事情是一样一样的。你要给GET加上request body，给POST带上url参数，技术上是完全行的通的。     
+&nbsp;   
+&nbsp;   
+那么，“标准答案”里的那些区别是怎么回事？    
