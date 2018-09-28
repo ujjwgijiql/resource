@@ -9,7 +9,7 @@ GET和POST是HTTP请求的两种基本方法，要说它们的区别，接触过
  &nbsp;    
 当你在面试中被问到这个问题，你的内心充满了自信和喜悦。    
 &nbsp;   
- ![soeasy](https://github.com/zhang-jh/resource/blob/master/basic/images/soeasy.jpg) 
+ ![soeasy](https://github.com/zhang-jh/resource/blob/master/basic/images/soeasy.png) 
 
     你轻轻松松的给出了一个“标准答案”：
 * GET在浏览器回退时是无害的，而POST会再次提交请求。
