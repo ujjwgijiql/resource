@@ -141,7 +141,19 @@ public class AbandonedConnectionCleanupTheardListener implements ServletContextL
         }
     }
 }
-```
-
-
-
+```    
+&nbsp;    
+* 还有一种可能性是在SSH远程启动Tomcat之后，退出SSH会同时关闭Tomcat    
+SSH远程启动tomcat后，退出SSH,tomcat也退出    
+在原本的启动命令 ./catalina.sh start前面加上nohup，即nohup ./catalina.sh start    
+其中，nohup 是linux命令，不挂断运行，具体如下：   
+语法：nohup Command [ Arg ... ] [　& ]    
+描述：nohup 命令运行由 Command 参数和任何相关的 Arg 参数指定的命令，忽略所有挂断（SIGHUP）信号。在注销后使用 nohup 命令运行后台中的程序。要运行后台中的 nohup 命令，添加 & （ 表示“and”的符号）到命令的尾部。    
+无论是否将 nohup 命令的输出重定向到终端，输出都将附加到当前目录的 nohup.out 文件中。如果当前目录的 nohup.out 文件不可写，输出重定向到 $HOME/nohup.out 文件中。如果没有文件能创建或打开以用于追加，那么 Command 参数指定的命令不可调用。如果标准错误是一个终端，那么把指定的命令写给标准错误的所有输出作为标准输出重定向到相同的文件描述符。    
+&nbsp;    
+　　退出状态：该命令返回下列出口值：    
+　　126 可以查找但不能调用 Command 参数指定的命令。    
+　　127 nohup 命令发生错误或不能查找由 Command 参数指定的命令。   
+　　否则，nohup 命令的退出状态是 Command 参数指定命令的退出状态。    
+  
+  
