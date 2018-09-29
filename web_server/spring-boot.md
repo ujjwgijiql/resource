@@ -71,7 +71,77 @@ profiles配置中在开发环境增加<jarscope>compile</jarscope>，在测试�
     </profile>
   </profiles>
 ```    
+&nbsp;    
+* MySQL的Bug导致
+在Tomcat下无法清除MySQL连接线程，会导致服务挂掉，这是MySQL的bug，MySQL官方BUG信息：https://bugs.mysql.com/bug.php?id=69526。 可以通过建立监听器销毁线程的方式来解决，代码如下：
+```java
+/*
+ * Copyright 2016-2017 TVI Go Easy.
+ * Created on 2017/4/25 11:28
+ */
+package org.mechanic.fund.listener;
 
+import com.mysql.jdbc.AbandonedConnectionCleanupThread;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Profile;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Enumeration;
+
+/**
+ * 清除数据库链接线程。该现象目前只发现在MySQL驱动上存在
+ * MySQL官方BUG信息：https://bugs.mysql.com/bug.php?id=69526
+ * 避免Tomcat reload application的是无法清除MySQL连接线程时抛出一下异常：
+ * org.apache.catalina.loader.WebappClassLoader clearReferencesThreads
+ * SEVERE: The web application [/XXX] appears to have started a thread named
+ * [Abandoned connection cleanup thread] but has failed to stop it. This is very
+ * likely to create a memory leak.
+ *
+ * [@author](https://my.oschina.net/arthor) mechanic
+ * [@version](https://my.oschina.net/u/931210) 0.0.1
+ */
+@WebListener
+@Profile({"test", "release"})
+public class AbandonedConnectionCleanupTheardListener implements ServletContextListener {
+
+    private static Logger logger = LoggerFactory.getLogger(AbandonedConnectionCleanupTheardListener.class);
+
+    [@Override](https://my.oschina.net/u/1162528)
+    public void contextInitialized(ServletContextEvent sce) {
+        logger.info("AbandonedConnectionCleanupTheardListener is started.");
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+        Enumeration<Driver> drivers = DriverManager.getDrivers();
+
+        Driver driver = null;
+
+        // 清除驱动
+        while (drivers.hasMoreElements()) {
+            try {
+                driver = drivers.nextElement();
+                DriverManager.deregisterDriver(driver);
+            } catch (SQLException ex) {
+                logger.error("注销数据库连接线程失败。这种情况通常出现在MySQL上。");
+            }
+        }
+
+        // MySQL driver leaves around a thread. This static method cleans it up.
+        try {
+            AbandonedConnectionCleanupThread.shutdown();
+        } catch (InterruptedException e) {
+            logger.error("AbandonedConnectionCleanupThread线程关闭失败。这种情况通常出现在MySQL上。");
+        }
+    }
+}
+```
 
 
 
