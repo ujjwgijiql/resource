@@ -7,6 +7,10 @@
 　　。coding：https://coding.net/</br>
 
 
+# github上最全的资源教程-前端涉及的所有知识体系
+* https://blog.csdn.net/qq_34348873/article/details/52572008
+ 
+
 # tools
 * https://github.com/openzipkin/zipkin    
 :业务服务的性能分析和分布式调用链接分析    
