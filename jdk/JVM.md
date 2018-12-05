@@ -27,3 +27,6 @@ jstack pid |grep tid -A 30
 3、jstack：Java提供的命令。可以查看某个进程的当前线程栈运行情况。根据这个命令的输出可以定位某个进程的所有线程的当前运行状态、运行代码，以及是否死锁等等。    
 
 4、pstack：Linux命令。可以查看某个进程的当前线程栈运行情况。    
+
+
+引用：https://www.cnblogs.com/lishijia/p/5549980.html
