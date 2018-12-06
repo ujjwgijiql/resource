@@ -6,6 +6,11 @@
 ```shell
 ps -mp pid -o THREAD,tid,time
 ```    
+或者
+
+```shell
+top -Hp pid
+```    
 找到了耗时最高的线程，占用CPU的时间！    
 
 * 其次将需要的线程ID转换为16进制格式：    
