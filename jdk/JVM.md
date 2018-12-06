@@ -3,19 +3,19 @@
 * 根据top命令，发现PID为***的Java进程占用CPU高达200%，出现故障。    
 * 通过ps aux | grep PID 命令，可以进一步确定是tomcat进程出现了问题。但是，怎么定位到具体线程或者代码呢？    
 * 首先显示线程列表:    
-`shell
+```shell
 ps -mp pid -o THREAD,tid,time
-`    
+```    
 找到了耗时最高的线程，占用CPU的时间！    
 
 * 其次将需要的线程ID转换为16进制格式：    
-`shell
+```shell
 printf "%x\n" tid
-`    
+```    
 * 最后打印线程的堆栈信息：    
-`shell
+```shell
 jstack pid |grep tid -A 30
-`  
+```  
 找到出现问题的代码了！
 
 * 最后，总结下排查CPU故障的方法和技巧有哪些：    
