@@ -32,7 +32,7 @@ F S UID PID PPID C PRI NI ADDR SZ WCHAN TTY TIME CMD
 1 S 0 6 1 0 -40 - - 0 migrat ? 00:00:02 migration/2
 1 S 0 7 1 0 94 19 - 0 ksofti ? 00:00:00 ksoftirqd/2
 ```
-相关信息的意义：    
+* 相关信息的意义：    
 F 进程的标志（flag），4表示用户为超级用户    
 S 进程的状态（stat），各STAT的见下文    
 PID 进程的ID    
@@ -44,3 +44,50 @@ SZ 用掉的内存的大小
 WCHAN 当进程是否正在运行，若为“-”表示正在运行    
 TTY 登录者的终端位置    
 TIME 用掉的CPU的时间    
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+* CMD 所執行的指令
+```shell
+# ps aux |more
+USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND
+root 1 0.0 0.0 4772 564 ? S Sep22 0:03 init [3]
+root 2 0.0 0.0 0 0 ? S Sep22 0:03 [migration/0]
+root 3 0.0 0.0 0 0 ? SN Sep22 0:00 [ksoftirqd/0]
+root 4 0.0 0.0 0 0 ? S Sep22 0:02 [migration/1]
+root 5 0.0 0.0 0 0 ? SN Sep22 0:00 [ksoftirqd/1]
+root 6 0.0 0.0 0 0 ? Ss+ Sep22 0:02 [migration/2]
+root 7 0.0 0.0 0 0 ? SN Sep22 0:00 [ksoftirqd/2]
+root 8 0.0 0.0 0 0 ? S Sep22 0:00 [migration/3]
+root 9 0.0 0.0 0 0 ? SN Sep22 0:00 [ksoftirqd/3]
+root 10 0.0 0.0 0 0 ? S< Sep22 0:00 [migration/4]
+```    
+* 上述各位解释：    
+USER 进程的属主；    
+PID 进程的ID；    
+PPID 父进程；    
+%CPU 进程占用的CPU百分比；    
+%MEM 占用内存的百分比；    
+NI 进程的NICE值，数值大，表示较少占用CPU时间；    
+VSZ 进程使用的虚拟内存量（KB）；    
+RSS 该进程占用的固定内存量（KB）（驻留中页的数量）；    
+TTY 该进程在那个终端上运行（登录都终端位置），若与终端无关，则显示（？）。    
+若为pts/0等，则表示由网络连接主机进程    
+WCHAN 当前进程是否正在进行，若为-表示正在进行；    
+START 该进程被触发启动时间；    
+TIME 该进程实际使用CPU运行的时间；    
+COMMAND 命令的名称和参数；    
+STAT状态位常见的状态字符    
+D 无法中断的休眠状态（通常 IO 的进程）；    
+R 正在运行可中在队列中可过行的；    
+S 处于休眠状态；    
+T 停止或被追踪；    
+W 进入内存交换 （从内核2.6开始无效）；    
+X 死掉的进程 （基本很少见）；    
+Z 僵尸进程；    
+< 优先级高的进程    
+N 优先级较低的进程    
+L 有些页被锁进内存；    
+s 进程的领导者（在它之下有子进程）；    
+l 多进程的（使用 CLONE_THREAD, 类似 NPTL pthreads）；    
++ 位于后台的进程组；    
+
