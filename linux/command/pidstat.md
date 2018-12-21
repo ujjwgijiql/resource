@@ -210,7 +210,7 @@ __详细说明__
 * kB_rd/s：每秒从磁盘读取的KB
 * kB_wr/s：每秒写入磁盘KB
 * kB_ccwr/s：任务取消的写入磁盘的KB。当任务截断脏的pagecache的时候会发生。
-* COMMAND:task的命令名
+* COMMAND:task的命令名    
 &nbsp;&nbsp;&nbsp;&nbsp;    
 
 # 示例五：显示每个进程的上下文切换情况（-w）
@@ -269,7 +269,7 @@ __详细说明__
 * %guest：进程在虚拟机占用cpu的百分比
 * %CPU：进程占用cpu的百分比
 * CPU：处理进程的cpu编号
-* Command：当前进程对应的命令
+* Command：当前进程对应的命令    
 &nbsp;&nbsp;&nbsp;&nbsp;    
 
 # 示例七：pidstat -T
@@ -282,7 +282,23 @@ pidstat -T ALL
 * CHILD关键字表示报告进程下所有线程统计信息。
 * ALL表示报告独立的task和task下面的所有线程。
 
+注意：task和子线程的全局的统计信息和pidstat选项无关。这些统计信息不会对应到当前的统计间隔，这些统计信息只有在子线程kill或者完成的时候才会被收集。
+```shell
+pidstat -T ALL -p 2386 10
+```
+```shell
+[root@******** /]# pidstat -T ALL -p 2386 10
+Linux 3.10.0-693.el7.x86_64 (********)        12/21/2018      _x86_64_        (2 CPU)
 
+01:51:36 PM   UID       PID    %usr %system  %guest    %CPU   CPU  Command
+01:51:46 PM     0      2386    2.50    0.60    0.00    3.10     1  java
 
-
+01:51:36 PM   UID       PID    usr-ms system-ms  guest-ms  Command
+01:51:46 PM     0      2386       250        60         0  java
+```
+* PID:进程id
+* Usr-ms:任务和子线程在用户级别使用的毫秒数。
+* System-ms:任务和子线程在系统级别使用的毫秒数。
+* Guest-ms:任务和子线程在虚拟机(running a virtual processor)使用的毫秒数。
+* Command:命令名
 
