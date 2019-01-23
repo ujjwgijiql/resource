@@ -50,7 +50,12 @@ server.1=c1:2888:3888
 server.2=c2:2888:3888
 server.3=c3:2888:3888
 ```    
-保存    
+* tickTime：这个时间是作为 Zookeeper 服务器之间或客户端与服务器之间维持心跳的时间间隔，也就是每个 tickTime 时间就会发送一个心跳。  
+* dataDir：顾名思义就是 Zookeeper 保存数据的目录，默认情况下，Zookeeper 将写数据的日志文件也保存在这个目录里。  
+* dataLogDir：顾名思义就是 Zookeeper 保存日志文件的目录  
+* clientPort：这个端口就是客户端连接 Zookeeper 服务器的端口，Zookeeper 会监听这个端口，接受客户端的访问请求。  
+当这些配置项配置好后，你现在就可以启动 Zookeeper 了，启动后要检查 Zookeeper 是否已经在服务，可以通过 netstat – ano 命令查看是否有你配置的clientPort 端口号在监听服务  
+    
 &nbsp;&nbsp;&nbsp;&nbsp;    
 __创建数据目录和日志目录：__    
 ```shell
