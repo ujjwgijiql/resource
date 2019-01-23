@@ -27,3 +27,32 @@ tmpfs                    1.6G     0  1.6G   0% /run/user/0
 ```    
 /var目录共900G，只使用了1%不到，因此可以将后续的所有文件和程序存放在此目录下。当然，这要根据你的实际情况而定。    
 
+## zookeeper安装
+__安装__  
+```shell
+ mkdir -p /var/download && cd /var/download
+ wget -c http://www.eu.apache.org/dist/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz
+ tar zxvf zookeeper-3.4.6.tar.gz
+ mkdir -p /var/local/server
+ mv zookeeper-3.4.6 /var/local/server/zookeeper
+ cd /var/local/server/zookeeper/conf
+ touch zoo.cfg
+```    
+编辑zoo.cfg中加入如下内容：    
+```text
+tickTime=2000
+dataDir=/var/data/zookeeper
+dataLogDir=/var/local/server/zookeeper/log
+clientPort=2181
+initLimit=5
+syncLimit=2
+server.1=c1:2888:3888
+server.2=c2:2888:3888
+server.3=c3:2888:3888
+```    
+保存    
+创建数据目录和日志目录：    
+```shell
+mkdir -p /var/data/zookeeper
+mkdir -p /var/local/server/zookeeper/log
+```    
