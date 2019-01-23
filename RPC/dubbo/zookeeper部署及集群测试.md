@@ -337,3 +337,42 @@ numChildren = 0
 此时说明zookeeper集群配置成功。
 
 ## 从节点主动升级和接管成为主节点
+leader和follower的自动切换，前面我们知道c1是leader，当leader down掉后是否有从节点升级为leader。    
+c1上执行    
+```shell
+/var/local/server/zookeeper/bin/zkServer.sh stop
+```    
+
+c2上查看状态
+```shell
+[root@cas ~]# /var/local/server/zookeeper/bin/zkServer.sh status
+JMX enabled by default
+Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
+Mode: follower
+```    
+可以发现c2仍然为从节点    
+
+再看看c3    
+```shell
+[root@localhost ~]# /var/local/server/zookeeper/bin/zkServer.sh status
+JMX enabled by default
+Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
+Mode: leader
+```    
+此时c3升级为了主节点
+
+再次启动c1，并查看状态
+```shell
+[root@sso conf]# /var/local/server/zookeeper/bin/zkServer.sh start
+JMX enabled by default
+Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
+Starting zookeeper ... STARTED
+[root@sso conf]#
+[root@sso conf]# /var/local/server/zookeeper/bin/zkServer.sh status
+JMX enabled by default
+Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
+Mode: follower
+```    
+发现c1作为了从节点。
+
+
