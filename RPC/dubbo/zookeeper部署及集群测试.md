@@ -56,3 +56,25 @@ server.3=c3:2888:3888
 mkdir -p /var/data/zookeeper
 mkdir -p /var/local/server/zookeeper/log
 ```    
+如不创建启动时会报如下异常：
+```shell
+root@sso conf]# /var/local/server/zookeeper/bin/zkServer.sh status
+JMX enabled by default
+Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
+Error contacting service. It is probably not running.
+```    
+创建myid文件， id 与 zoo.cfg 中的序号对应    
+```shell
+echo 1 > /var/data/zookeeper/myid
+```    
+注意：    
+* 如果是c2和c3中进行相应的修改    
+* c2上应改为：echo 2 > /var/data/zookeeper/myid    
+* c3上应改为：echo 3 > /var/data/zookeeper/myid    
+
+配置hosts文件：编辑/etc/hosts，加入如下内容：
+```shell
+192.168.1.80 c1
+192.168.1.81 c2
+192.168.1.82 c3
+```    
