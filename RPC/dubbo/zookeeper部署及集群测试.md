@@ -28,7 +28,7 @@ tmpfs                    1.6G     0  1.6G   0% /run/user/0
 /var目录共900G，只使用了1%不到，因此可以将后续的所有文件和程序存放在此目录下。当然，这要根据你的实际情况而定。    
 
 ## zookeeper安装
-__安装__  
+__安装：__  
 ```shell
  mkdir -p /var/download && cd /var/download
  wget -c http://www.eu.apache.org/dist/zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz
@@ -38,7 +38,7 @@ __安装__
  cd /var/local/server/zookeeper/conf
  touch zoo.cfg
 ```    
-编辑zoo.cfg中加入如下内容：    
+__编辑zoo.cfg中加入如下内容：__    
 ```text
 tickTime=2000
 dataDir=/var/data/zookeeper
@@ -51,7 +51,8 @@ server.2=c2:2888:3888
 server.3=c3:2888:3888
 ```    
 保存    
-创建数据目录和日志目录：    
+&nbsp;&nbsp;&nbsp;&nbsp;    
+__创建数据目录和日志目录：__    
 ```shell
 mkdir -p /var/data/zookeeper
 mkdir -p /var/local/server/zookeeper/log
@@ -63,7 +64,7 @@ JMX enabled by default
 Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
 Error contacting service. It is probably not running.
 ```    
-创建myid文件， id 与 zoo.cfg 中的序号对应    
+__创建myid文件， id 与 zoo.cfg 中的序号对应__    
 ```shell
 echo 1 > /var/data/zookeeper/myid
 ```    
@@ -72,7 +73,7 @@ echo 1 > /var/data/zookeeper/myid
 * c2上应改为：echo 2 > /var/data/zookeeper/myid    
 * c3上应改为：echo 3 > /var/data/zookeeper/myid    
 
-配置hosts文件：编辑/etc/hosts，加入如下内容：
+__配置hosts文件：编辑/etc/hosts，加入如下内容__
 ```shell
 192.168.1.80 c1
 192.168.1.81 c2
