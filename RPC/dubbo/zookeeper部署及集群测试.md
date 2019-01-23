@@ -79,3 +79,34 @@ __配置hosts文件：编辑/etc/hosts，加入如下内容__
 192.168.1.81 c2
 192.168.1.82 c3
 ```    
+
+## 常用命令    
+__启动__
+```shell
+/var/local/server/zookeeper/bin/zkServer.sh start
+```    
+__查看状态__
+```shell
+/var/local/server/zookeeper/bin/zkServer.sh status
+```    
+__重启__
+```shell
+/var/local/server/zookeeper/bin/zkServer.sh restart
+```    
+__关闭__
+```shell
+/var/local/server/zookeeper/bin/zkServer.sh stop
+```    
+__在其中一台用客户端连接__
+```shell
+/var/local/server/zookeeper/bin/zkCli.sh -server c1:2181
+```    
+
+## 操作实例：
+* 启动：/var/local/server/zookeeper/bin/zkServer.sh start
+```shell
+[root@sso conf]# /var/local/server/zookeeper/bin/zkServer.sh start
+JMX enabled by default
+Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
+Starting zookeeper ... STARTED
+```    
