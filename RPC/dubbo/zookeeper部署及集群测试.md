@@ -182,3 +182,158 @@ JMX enabled by default
 Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
 Mode: standalone
 ```    
+
+## 测试
+__在 c1 上连接 c1 上的 zookeeper__    
+/var/local/server/zookeeper/bin/zkCli.sh -server c1:2181    
+```shell
+[root@sso conf]# /var/local/server/zookeeper/bin/zkCli.sh -server c1:2181
+Connecting to c1:2181
+2016-08-25 10:06:30,235 [myid:] - INFO  [main:Environment@100] - Client environment:zookeeper.version=3.4.6-1569965, built on 02/20/2014 09:09 GMT
+2016-08-25 10:06:30,244 [myid:] - INFO  [main:Environment@100] - Client environment:host.name=sso.xxx.com
+2016-08-25 10:06:30,244 [myid:] - INFO  [main:Environment@100] - Client environment:java.version=1.7.0_79
+2016-08-25 10:06:30,250 [myid:] - INFO  [main:Environment@100] - Client environment:java.vendor=Oracle Corporation
+2016-08-25 10:06:30,251 [myid:] - INFO  [main:Environment@100] - Client environment:java.home=/usr/local/jdk1.7.0_79/jre
+2016-08-25 10:06:30,251 [myid:] - INFO  [main:Environment@100] - Client environment:java.class.path=/var/local/server/zookeeper/bin/../build/classes:/var/local/server/zookeeper/bin/../build/lib/*.jar:/var/local/server/zookeeper/bin/../lib/slf4j-log4j12-1.6.1.jar:/var/local/server/zookeeper/bin/../lib/slf4j-api-1.6.1.jar:/var/local/server/zookeeper/bin/../lib/netty-3.7.0.Final.jar:/var/local/server/zookeeper/bin/../lib/log4j-1.2.16.jar:/var/local/server/zookeeper/bin/../lib/jline-0.9.94.jar:/var/local/server/zookeeper/bin/../zookeeper-3.4.6.jar:/var/local/server/zookeeper/bin/../src/java/lib/*.jar:/var/local/server/zookeeper/bin/../conf:
+2016-08-25 10:06:30,251 [myid:] - INFO  [main:Environment@100] - Client environment:java.library.path=/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+2016-08-25 10:06:30,252 [myid:] - INFO  [main:Environment@100] - Client environment:java.io.tmpdir=/tmp
+2016-08-25 10:06:30,252 [myid:] - INFO  [main:Environment@100] - Client environment:java.compiler=<NA>
+2016-08-25 10:06:30,252 [myid:] - INFO  [main:Environment@100] - Client environment:os.name=Linux
+2016-08-25 10:06:30,252 [myid:] - INFO  [main:Environment@100] - Client environment:os.arch=amd64
+2016-08-25 10:06:30,253 [myid:] - INFO  [main:Environment@100] - Client environment:os.version=3.10.0-327.10.1.el7.x86_64
+2016-08-25 10:06:30,253 [myid:] - INFO  [main:Environment@100] - Client environment:user.name=root
+2016-08-25 10:06:30,253 [myid:] - INFO  [main:Environment@100] - Client environment:user.home=/root
+2016-08-25 10:06:30,254 [myid:] - INFO  [main:Environment@100] - Client environment:user.dir=/var/local/server/zookeeper/conf
+2016-08-25 10:06:30,257 [myid:] - INFO  [main:ZooKeeper@438] - Initiating client connection, connectString=c1:2181 sessionTimeout=30000 watcher=org.apache.zookeeper.ZooKeeperMain$MyWatcher@194d62f1
+Welcome to ZooKeeper!
+2016-08-25 10:06:30,335 [myid:] - INFO  [main-SendThread(sso.xxx.com:2181):ClientCnxn$SendThread@975] - Opening socket connection to server sso.xxx.com/192.168.1.80:2181. Will not attempt to authenticate using SASL (unknown error)
+JLine support is enabled
+2016-08-25 10:06:30,349 [myid:] - INFO  [main-SendThread(sso.xxx.com:2181):ClientCnxn$SendThread@852] - Socket connection established to sso.xxx.com/192.168.1.80:2181, initiating session
+2016-08-25 10:06:30,412 [myid:] - INFO  [main-SendThread(sso.xxx.com:2181):ClientCnxn$SendThread@1235] - Session establishment complete on server sso.xxx.com/192.168.1.80:2181, sessionid = 0x156bf70d7580000, negotiated timeout = 30000
+
+WATCHER::
+
+WatchedEvent state:SyncConnected type:None path:null
+[zk: c1:2181(CONNECTED) 0]
+```    
+
+__添加一个根节点目录zookeeper_project__    
+create /project zookeeper_project    
+```shell
+[zk: c1:2181(CONNECTED) 0] create /project  zookeeper_project
+Created /project
+[zk: c1:2181(CONNECTED) 1] get /project
+zookeeper_project
+cZxid = 0x2
+ctime = Thu Aug 25 10:09:09 CST 2016
+mZxid = 0x2
+mtime = Thu Aug 25 10:09:09 CST 2016
+pZxid = 0x2
+cversion = 0
+dataVersion = 0
+aclVersion = 0
+ephemeralOwner = 0x0
+dataLength = 17
+numChildren = 0
+```    
+
+此时说明单机配置成功    
+
+## 多机集群
+取消zoo.cfg中server.2和server.3的注释，最后zoo.cfg配置文件如下：    
+```text
+tickTime=2000
+dataDir=/var/data/zookeeper
+dataLogDir=/var/local/server/zookeeper/log
+clientPort=2181
+initLimit=5
+syncLimit=2
+server.1=c1:2888:3888
+server.2=c2:2888:3888
+server.3=c3:2888:3888
+```    
+在c2和c3中执行类似的操作
+
+__多机联合测试__
+c1运行结果：    
+```shell
+[root@sso conf]# /var/local/server/zookeeper/bin/zkServer.sh status
+JMX enabled by default
+Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
+Mode: leader
+```    
+
+c2运行结果：    
+```shell
+[root@cas zookeeper]# /var/local/server/zookeeper/bin/zkServer.sh status
+JMX enabled by default
+Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
+Mode: follower
+```    
+
+c3运行结果：    
+```shell
+[root@localhost zookeeper]# /var/local/server/zookeeper/bin/zkServer.sh status
+JMX enabled by default
+Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
+Mode: follower
+```    
+
+## 同步测试
+c1上执行：    
+create /c1project c1projecttest和get /c1project    
+```shell
+[zk: c1:2181(CONNECTED) 2] create /c1project c1projecttest
+Created /c1project
+[zk: c1:2181(CONNECTED) 1] get /c1project
+c1projecttest
+cZxid = 0x100000013
+ctime = Thu Aug 25 11:03:49 CST 2016
+mZxid = 0x100000013
+mtime = Thu Aug 25 11:03:49 CST 2016
+pZxid = 0x100000013
+cversion = 0
+dataVersion = 0
+aclVersion = 0
+ephemeralOwner = 0x0
+dataLength = 13
+numChildren = 0
+```    
+
+c2上查看同步结果：    
+get /c1project
+```shell
+[zk: c2:2181(CONNECTED) 0] get /c1project
+c1projecttest
+cZxid = 0x100000013
+ctime = Thu Aug 25 11:03:49 CST 2016
+mZxid = 0x100000013
+mtime = Thu Aug 25 11:03:49 CST 2016
+pZxid = 0x100000013
+cversion = 0
+dataVersion = 0
+aclVersion = 0
+ephemeralOwner = 0x0
+dataLength = 13
+numChildren = 0
+```    
+
+c3上查看同步结果：    
+```shell
+[zk: c3:2181(CONNECTED) 4] get /c1project
+c1projecttest
+cZxid = 0x100000013
+ctime = Thu Aug 25 11:03:49 CST 2016
+mZxid = 0x100000013
+mtime = Thu Aug 25 11:03:49 CST 2016
+pZxid = 0x100000013
+cversion = 0
+dataVersion = 0
+aclVersion = 0
+ephemeralOwner = 0x0
+dataLength = 13
+numChildren = 0
+```    
+此时说明zookeeper集群配置成功。
+
+## 从节点主动升级和接管成为主节点
