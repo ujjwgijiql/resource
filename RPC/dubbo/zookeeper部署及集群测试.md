@@ -110,3 +110,75 @@ JMX enabled by default
 Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
 Starting zookeeper ... STARTED
 ```    
+* 查看状态：/var/local/server/zookeeper/bin/zkServer.sh status    
+```shell
+[root@sso conf]# /var/local/server/zookeeper/bin/zkServer.sh status
+JMX enabled by default
+Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
+Error contacting service. It is probably not running.
+```    
+此时发现zookeeper并没有正常运行。    
+查看日志more zookeeper.out，发现如下异常：
+```shell
+2016-08-25 09:55:54,088 [myid:1] - WARN  [WorkerSender[myid=1]:QuorumCnxManager@382] - Cannot open channel to 2 at election address c2/192.168.1.81:3888
+java.net.NoRouteToHostException: No route to host
+        at java.net.PlainSocketImpl.socketConnect(Native Method)
+        at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+        at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+        at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+        at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+        at java.net.Socket.connect(Socket.java:579)
+        at org.apache.zookeeper.server.quorum.QuorumCnxManager.connectOne(QuorumCnxManager.java:368)
+        at org.apache.zookeeper.server.quorum.QuorumCnxManager.toSend(QuorumCnxManager.java:341)
+        at org.apache.zookeeper.server.quorum.FastLeaderElection$Messenger$WorkerSender.process(FastLeaderElection.java:449)
+        at org.apache.zookeeper.server.quorum.FastLeaderElection$Messenger$WorkerSender.run(FastLeaderElection.java:430)
+        at java.lang.Thread.run(Thread.java:745)
+2016-08-25 09:55:54,101 [myid:1] - WARN  [WorkerSender[myid=1]:QuorumCnxManager@382] - Cannot open channel to 3 at election address c3/192.168.1.82:3888
+java.net.ConnectException: Connection refused
+        at java.net.PlainSocketImpl.socketConnect(Native Method)
+        at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+        at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+        at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+        at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+        at java.net.Socket.connect(Socket.java:579)
+        at org.apache.zookeeper.server.quorum.QuorumCnxManager.connectOne(QuorumCnxManager.java:368)
+        at org.apache.zookeeper.server.quorum.QuorumCnxManager.toSend(QuorumCnxManager.java:341)
+        at org.apache.zookeeper.server.quorum.FastLeaderElection$Messenger$WorkerSender.process(FastLeaderElection.java:449)
+        at org.apache.zookeeper.server.quorum.FastLeaderElection$Messenger$WorkerSender.run(FastLeaderElection.java:430)
+        at java.lang.Thread.run(Thread.java:745)
+2016-08-25 09:55:54,287 [myid:1] - WARN  [QuorumPeer[myid=1]/0:0:0:0:0:0:0:0:2181:QuorumCnxManager@382] - Cannot open channel to 2 at election address c2/192.168.1.81:3888
+java.net.NoRouteToHostException: No route to host
+        at java.net.PlainSocketImpl.socketConnect(Native Method)
+        at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+        at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+        at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+        at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+        at java.net.Socket.connect(Socket.java:579)
+        at org.apache.zookeeper.server.quorum.QuorumCnxManager.connectOne(QuorumCnxManager.java:368)
+        at org.apache.zookeeper.server.quorum.QuorumCnxManager.connectAll(QuorumCnxManager.java:402)
+        at org.apache.zookeeper.server.quorum.FastLeaderElection.lookForLeader(FastLeaderElection.java:840)
+        at org.apache.zookeeper.server.quorum.QuorumPeer.run(QuorumPeer.java:762)
+```    
+这是由于2、3号机器没有正常配置导致。可以在zoo.cfg中将其注释后再次尝试。    
+```shell
+tickTime=2000
+dataDir=/var/data/zookeeper
+dataLogDir=/var/local/server/zookeeper/log
+clientPort=2181
+initLimit=5
+syncLimit=2
+server.1=c1:2888:3888
+#server.2=c2:2888:3888
+#server.3=c3:2888:3888
+```
+正常启动效果：    
+```shell
+[root@sso conf]# /var/local/server/zookeeper/bin/zkServer.sh start
+JMX enabled by default
+Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
+Starting zookeeper ... STARTED
+[root@sso conf]# /var/local/server/zookeeper/bin/zkServer.sh status
+JMX enabled by default
+Using config: /var/local/server/zookeeper/bin/../conf/zoo.cfg
+Mode: standalone
+```    
