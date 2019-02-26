@@ -111,9 +111,70 @@ netstat -an | grep SYN | awk ‘{print $5}’ | awk -F: ‘{print $1}’ | sort 
 __6.根据端口列进程__
 ```shell
 netstat -ntlp | grep 80 | awk ‘{print $7}’ | cut -d/ -f1
-```
+```    
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+## 网站日志分析篇1（Apache）：
+
+__1.获得访问前10位的ip地址__
+cat access.log|awk ‘{print $1}’|sort|uniq -c|sort -nr|head -10
+cat access.log|awk ‘{counts[$(11)]+=1}; END {for(url in counts) print counts[url], url}’
+
+__2.访问次数最多的文件或页面,取前20__
+cat access.log|awk ‘{print $11}’|sort|uniq -c|sort -nr|head -20
+
+__3.列出传输最大的几个exe文件（分析下载站的时候常用）__
+cat access.log |awk ‘($7~/\.exe/){print $10 ” ” $1 ” ” $4 ” ” $7}’|sort -nr|head -20
+
+__4.列出输出大于200000byte(约200kb)的exe文件以及对应文件发生次数__
+cat access.log |awk ‘($10 > 200000 && $7~/\.exe/){print $7}’|sort -n|uniq -c|sort -nr|head -100
+
+__5.如果日志最后一列记录的是页面文件传输时间，则有列出到客户端最耗时的页面__
+cat access.log |awk ‘($7~/\.php/){print $NF ” ” $1 ” ” $4 ” ” $7}’|sort -nr|head -100
+
+__6.列出最最耗时的页面(超过60秒的)的以及对应页面发生次数__
+cat access.log |awk ‘($NF > 60 && $7~/\.php/){print $7}’|sort -n|uniq -c|sort -nr|head -100
+
+__7.列出传输时间超过 30 秒的文件__
+cat access.log |awk ‘($NF > 30){print $7}’|sort -n|uniq -c|sort -nr|head -20
+
+__8.统计网站流量（G)__
+cat access.log |awk ‘{sum+=$10} END {print sum/1024/1024/1024}’
+
+__9.统计404的连接__
+awk ‘($9 ~/404/)’ access.log | awk ‘{print $9,$7}’ | sort
+
+__10. 统计http status.__
+cat access.log |awk ‘{counts[$(9)]+=1}; END {for(code in counts) print code, counts[code]}'
+cat access.log |awk '{print $9}'|sort|uniq -c|sort -rn
+
+__11.蜘蛛分析__
+查看是哪些蜘蛛在抓取内容。
+/usr/sbin/tcpdump -i eth0 -l -s 0 -w - dst port 80 | strings | grep -i user-agent | grep -i -E 'bot|crawler|slurp|spider'
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+## 网站日分析2(Squid篇）
+
+__1.按域统计流量__
+zcat squid_access.log.tar.gz| awk '{print $10,$7}' |awk 'BEGIN{FS="[ /]"}{trfc[$4]+=$1}END{for(domain in trfc){printf "%s\t%d\n",domain,trfc[domain]}}'
 
 
+&nbsp;&nbsp;&nbsp;&nbsp;
+## 数据库篇
+
+__1.查看数据库执行的sql__
+/usr/sbin/tcpdump -i eth0 -s 0 -l -w - dst port 3306 | strings | egrep -i 'SELECT|UPDATE|DELETE|INSERT|SET|COMMIT|ROLLBACK|CREATE|DROP|ALTER|CALL'
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+## 系统Debug分析篇
+
+__1.调试命令__
+strace -p pid
+
+__2.跟踪指定进程的PID__
+gdb -p pid
 
 
 
