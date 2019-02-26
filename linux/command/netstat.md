@@ -103,6 +103,17 @@ __4.查找较多time_wait连接__
 netstat -n|grep TIME_WAIT|awk ‘{print $5}’|sort|uniq -c|sort -rn|head -n20
 ```
 
+__5.找查较多的SYN连接__
+```shell
+netstat -an | grep SYN | awk ‘{print $5}’ | awk -F: ‘{print $1}’ | sort | uniq -c | sort -nr | more
+```
+
+__6.根据端口列进程__
+```shell
+netstat -ntlp | grep 80 | awk ‘{print $7}’ | cut -d/ -f1
+```
+
+
 
 
 
