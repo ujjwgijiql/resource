@@ -85,10 +85,159 @@ __2. 列出所有处于监听状态的 Sockets__
  udp        0      0 *:49119                 *:*
 ```
 
+* 只列出所有监听 tcp 端口 netstat -lt
+```shell
+# netstat -lt
+ Active Internet connections (only servers)
+ Proto Recv-Q Send-Q Local Address           Foreign Address         State
+ tcp        0      0 localhost:30037         *:*                     LISTEN
+ tcp        0      0 *:smtp                  *:*                     LISTEN
+ tcp6       0      0 localhost:ipp           [::]:*                  LISTEN
+```
 
+*  只列出所有监听 udp 端口 netstat -lu
+```shell
+# netstat -lu
+ Active Internet connections (only servers)
+ Proto Recv-Q Send-Q Local Address           Foreign Address         State
+ udp        0      0 *:49119                 *:*
+ udp        0      0 *:mdns                  *:*
+```
 
+* 只列出所有监听 UNIX 端口 netstat -lx
+```shell
+# netstat -lx
+ Active UNIX domain sockets (only servers)
+ Proto RefCnt Flags       Type       State         I-Node   Path
+ unix  2      [ ACC ]     STREAM     LISTENING     6294     private/maildrop
+ unix  2      [ ACC ]     STREAM     LISTENING     6203     public/cleanup
+ unix  2      [ ACC ]     STREAM     LISTENING     6302     private/ifmail
+ unix  2      [ ACC ]     STREAM     LISTENING     6306     private/bsmtp
+```
+&nbsp;&nbsp;&nbsp;&nbsp;
+__3. 显示每个协议的统计信息__
+* 显示所有端口的统计信息 netstat -s
+```shell
+# netstat -s
+ Ip:
+ 11150 total packets received
+ 1 with invalid addresses
+ 0 forwarded
+ 0 incoming packets discarded
+ 11149 incoming packets delivered
+ 11635 requests sent out
+ Icmp:
+ 0 ICMP messages received
+ 0 input ICMP message failed.
+ Tcp:
+ 582 active connections openings
+ 2 failed connection attempts
+ 25 connection resets received
+ Udp:
+ 1183 packets received
+ 4 packets to unknown port received.
+ .....
+```
 
-
+* 显示 TCP 或 UDP 端口的统计信息 netstat -st 或 -su
+```shell
+# netstat -st 
+# netstat -su
+```
+&nbsp;&nbsp;&nbsp;&nbsp;
+__4. 在 netstat 输出中显示 PID 和进程名称 netstat -p__
+netstat -p 可以与其它开关一起使用，就可以添加 “PID/进程名称” 到 netstat 输出中，这样 debugging 的时候可以很方便的发现特定端口运行的程序。
+```shell
+# netstat -pt
+ Active Internet connections (w/o servers)
+ Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+ tcp        1      0 ramesh-laptop.loc:47212 192.168.185.75:www        CLOSE_WAIT  2109/firefox
+ tcp        0      0 ramesh-laptop.loc:52750 lax:www ESTABLISHED 2109/firefox
+```
+&nbsp;&nbsp;&nbsp;&nbsp;
+__5. 在 netstat 输出中不显示主机，端口和用户名 (host, port or user)__
+当你不想让主机，端口和用户名显示，使用 netstat -n。将会使用数字代替那些名称。    
+同样可以加速输出，因为不用进行比对查询。    
+```shell
+# netstat -an
+```
+如果只是不想让这三个名称中的一个被显示，使用以下命令
+```shell
+# netsat -a --numeric-ports
+# netsat -a --numeric-hosts
+# netsat -a --numeric-users
+```
+&nbsp;&nbsp;&nbsp;&nbsp;
+__6. 持续输出 netstat 信息__
+netstat 将每隔一秒输出网络信息。
+```shell
+# netstat -c
+ Active Internet connections (w/o servers)
+ Proto Recv-Q Send-Q Local Address           Foreign Address         State
+ tcp        0      0 ramesh-laptop.loc:36130 101-101-181-225.ama:www ESTABLISHED
+ tcp        1      1 ramesh-laptop.loc:52564 101.11.169.230:www      CLOSING
+ tcp        0      0 ramesh-laptop.loc:43758 server-101-101-43-2:www ESTABLISHED
+ tcp        1      1 ramesh-laptop.loc:42367 101.101.34.101:www      CLOSING
+ ^C
+```
+&nbsp;&nbsp;&nbsp;&nbsp;
+__7. 显示系统不支持的地址族 (Address Families)__
+```shell
+netstat --verbose
+```
+在输出的末尾，会有如下的信息
+```shell
+netstat: no support for `AF IPX' on this system.
+netstat: no support for `AF AX25' on this system.
+netstat: no support for `AF X25' on this system.
+netstat: no support for `AF NETROM' on this system.
+```
+&nbsp;&nbsp;&nbsp;&nbsp;
+__8. 显示核心路由信息 netstat -r__
+```shell
+# netstat -r
+ Kernel IP routing table
+ Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface
+ 192.168.1.0     *               255.255.255.0   U         0 0          0 eth2
+ link-local      *               255.255.0.0     U         0 0          0 eth2
+ default         192.168.1.1     0.0.0.0         UG        0 0          0 eth2
+```
+注意： 使用 netstat -rn 显示数字格式，不查询主机名称。
+&nbsp;&nbsp;&nbsp;&nbsp;
+__9. 找出程序运行的端口__
+并不是所有的进程都能找到，没有权限的会不显示，使用 root 权限查看所有的信息。
+```shell
+# netstat -ap | grep ssh
+ tcp        1      0 dev-db:ssh           101.174.100.22:39213        CLOSE_WAIT  -
+ tcp        1      0 dev-db:ssh           101.174.100.22:57643        CLOSE_WAIT  -
+```
+找出运行在指定端口的进程
+```shell
+# netstat -an | grep ':80'
+```
+&nbsp;&nbsp;&nbsp;&nbsp;
+__10. 显示网络接口列表__
+```shell
+# netstat -i
+ Kernel Interface table
+ Iface   MTU Met   RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg
+ eth0       1500 0         0      0      0 0             0      0      0      0 BMU
+ eth2       1500 0     26196      0      0 0         26883      6      0      0 BMRU
+ lo        16436 0         4      0      0 0             4      0      0      0 LRU
+ ```
+ 显示详细信息，像是 ifconfig 使用 netstat -ie:
+ ```shell
+ # netstat -ie
+ Kernel Interface table
+ eth0      Link encap:Ethernet  HWaddr 00:10:40:11:11:11
+ UP BROADCAST MULTICAST  MTU:1500  Metric:1
+ RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+ TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+ collisions:0 txqueuelen:1000
+ RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+ Memory:f6ae0000-f6b00000
+ ```
+&nbsp;&nbsp;&nbsp;&nbsp;
 ## 2.网络连接状态详解
 共有12中可能的状态，前面11种是按照TCP连接建立的三次握手和TCP连接断开的四次挥手过程来描述的。    
 1)、LISTEN:首先服务端需要打开一个socket进行监听，状态为LISTEN./* The socket is listening for incoming connections. 侦听来自远方TCP端口的连接请求 */
