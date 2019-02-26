@@ -69,5 +69,43 @@ SYN: (同步序列编号,Synchronize Sequence Numbers)该标志仅在三次握�
 ACK: (确认编号,Acknowledgement Number)是对TCP请求的确认标志,同时提示对端系统已经成功接收所有数据。
 FIN: (结束标志,FINish)用来结束一个TCP回话.但对应端口仍处于开放状态,准备接收后续数据。
 
-PS： 在windows下有个小工具挺好的，TCPView is a Windows program that will show you detailed listings of all TCP and UDP endpoints on your system, including the local and remote addresses and state of TCP connections.见 http://technet.microsoft.com/en-us/sysinternals/bb897437 ； 当然如果要详细分析数据包，可选用sniffer、Wireshark等更强大的工具。
+PS： 在windows下有个小工具挺好的，TCPView is a Windows program that will show you detailed listings of all TCP and UDP endpoints on your system, including the local and remote addresses and state of TCP connections.见 http://technet.microsoft.com/en-us/sysinternals/bb897437 ； 当然如果要详细分析数据包，可选用sniffer、Wireshark等更强大的工具。    
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+## 3.系统连接状态
+__1.查看TCP连接状态__
+```shell
+netstat -nat |awk ‘{print $6}’|sort|uniq -c|sort -rn
+
+netstat -n | awk ‘/^tcp/ {++S[$NF]};END {for(a in S) print a, S[a]}’ 或
+netstat -n | awk ‘/^tcp/ {++state[$NF]}; END {for(key in state) print key,”\t”,state[key]}’
+netstat -n | awk ‘/^tcp/ {++arr[$NF]};END {for(k in arr) print k,”\t”,arr[k]}’
+
+netstat -n |awk ‘/^tcp/ {print $NF}’|sort|uniq -c|sort -rn
+
+netstat -ant | awk ‘{print $NF}’ | grep -v ‘[a-z]‘ | sort | uniq -c
+```    
+
+__2.查找请求数前20个IP（常用于查找攻来源）：__
+```shell
+netstat -anlp|grep 80|grep tcp|awk ‘{print $5}’|awk -F: ‘{print $1}’|sort|uniq -c|sort -nr|head -n20
+
+netstat -ant |awk ‘/:80/{split($5,ip,”:”);++A[ip[1]]}END{for(i in A) print A[i],i}’ |sort -rn|head -n20
+```    
+
+__3.用tcpdump嗅探80端口的访问看看谁最高__
+```shell
+tcpdump -i eth0 -tnn dst port 80 -c 1000 | awk -F”.” ‘{print $1″.”$2″.”$3″.”$4}’ | sort | uniq -c | sort -nr |head -20
+```
+
+__4.查找较多time_wait连接__
+```shell
+netstat -n|grep TIME_WAIT|awk ‘{print $5}’|sort|uniq -c|sort -rn|head -n20
+```
+
+
+
+
+
+
 
