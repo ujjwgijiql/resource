@@ -122,5 +122,46 @@ __6、${}总结__
 例如：${var%%x*}表示找出从右边算起最后一个字符x，并删除字符x及其右边的字符。    
 
 看到这里，就可以知道，其实该命令的用途非常广泛，上面只是指针文件名和目录名的命名特性来进行提取的一些特例而已。    
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+## 二、basename和dirname
+${}并不是专门为提取文件名和目录名设计的命令，那么basename和dirname命令就是专门为做这一件事而已准备的了。    
+__1、basename__    
+该命令的作用是从路径中提取出文件名，使用方法为basename NAME [SUFFIX]。
+
+1）从路径中提出出文件名（带后缀），例子如下：
+```shell
+# var=/dir1/dir2/file.txt
+# echo ${basename $var}
+file.txt
+```   
+2）从上面命令的用法中可以看到，后缀（SUFFIX）是一个可选项。所以，若只想提取出文件名file，而不带有后缀，还可以在变量的后面加上后缀名，例子如下：
+```shell
+# var=/dir1/dir2/file.txt
+# echo ${basename $var .txt}
+file
+``` 
+__2、dirname__    
+该命令的作用是从路径中提取出目录名，使用方法为 dirname NAME
+使用例子如下：
+```shell
+# var=/dir1/dir2/file.txt
+# echo $dirname $var
+/dir1/dir2
+```   
+这样就提取出了file.txt文件所在的目录。    
+
+注：该命令不仅能提取出普通文件所的目录，它能提取出任何文件所在的目录，例如目录所在的目录，如下：    
+```shell
+# var=/dir1/dir2/
+# echo $dirname $var
+/dir1
+```   
+它提取出了目录dir2所在的目录dir1.
+
+
+
+
+
 
 
