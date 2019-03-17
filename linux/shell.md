@@ -45,10 +45,11 @@ __&&  必须两个条件同时满足，和上述一样，这里想说明的问�
 相对的，|| 和 && 不能在中括号内使用，只能在中括号外使用    
 
 ## 3、当判断某个变量的值是否满足正则表达式的时候，必须使用[[  ]]  双对中括号,单对中括号，直接报错：
-
-
-
-
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
 # 提取文件名和目录名的一些方法总结 使用${}
   很多时候在使用Linux的shell时，我们都需要对文件名或目录名进行处理，通常的操作是由路径中提取出文件名，从路径中提取出目录名，提取文件后缀名等等。例如，从路径/dir1/dir2/file.txt中提取也文件名file.txt，提取出目录/dir1/dir2，提取出文件后缀txt等。
 
@@ -158,7 +159,25 @@ __2、dirname__
 /dir1
 ```   
 它提取出了目录dir2所在的目录dir1.
-
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;
+#shell脚本检查端口是否被占用
+```shell
+port=$1
+echo "check $port"
+grep_port=`netstat -tlpn | grep "\b$port\b"`
+echo "grep port is $grep_port"
+if [ -n "$grep_port" ]
+then
+  echo "port $port is in use"
+  exit 1
+else
+  echo "port is not in use"
+fi
+```
 
 
 
