@@ -13,7 +13,7 @@ chkconfig在命令行操作时会经常用到。它可以方便地设置各个�
 
 * 设定mysqld在等级3和5为开机运行服务
 ```shell
-# chkconfig –level 35 mysqld on
+# chkconfig --level 35 mysqld on
 ```
 –level 35表示操作只在等级3和5执行  
 on表示启动，off表示关闭  
@@ -42,5 +42,5 @@ on表示启动，off表示关闭
 
 * 删除一个服务
 ```shell
-# chkconfig –del servicename
+# chkconfig --del servicename
 ```
