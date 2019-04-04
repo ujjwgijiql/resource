@@ -8,7 +8,7 @@
 
 * uname -r打印内核发信版本号
 
-* uname –help 获得帮助信息
+* uname --help 获得帮助信息
 
 * 查看系统版本号的方法还有
 ```shell
