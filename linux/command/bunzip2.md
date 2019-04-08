@@ -19,7 +19,7 @@ j ：表示采用bunzip2工具。（yegle说可以省略j，即不特殊指定�
 #bzip2 abc.txt
 ```
 压缩后会得到一个压缩文件abc.txt.bz2，同时原abc.txt会被删除。（这点很重要哦，linux考试会问到这一点）  
-&nbsp;&bnsp;
+&nbsp;&nbsp;
 
 ### 3、如果有一个文件abc.txt.bz2，想解压缩
 ```shell
@@ -38,6 +38,8 @@ j ：表示采用bunzip2工具。（yegle说可以省略j，即不特殊指定�
 # bunzip2 abc1.txt.bz2 abc2.txt.bz2
 ```
 
-
-
+### 6、如果有abc1.txt和abc2.txt两个文件，我想用一个命令把两个文件分别压缩为abc1.txt.bz2和abc2.txt.bz2
+```shell
+# bzip2 abc1.txt abc2.txt
+```
 
