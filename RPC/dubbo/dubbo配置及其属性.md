@@ -32,14 +32,11 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 服务提供者暴露服务配置：  
 配置类：com.alibaba.dubbo.config.ServiceConfig  
 
-<style>
-  table th:nth-of-type(3) {
-    background-color: #F8F8F8;
-  }
-</style>
+<style> table th:first-of-type { width: 100px; } </style>
 
 |       标签       |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
 |:---------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
-| \<dubbo:servic> | interface |                | class       |    必填    |           | 服务发现 |服务接口名         |  1.0.0以上版本  |
-| \<dubbo:servic> | ref       |                | object      |    必填    |           | 服务发现 |服务对象实现引用    |  1.0.0以上版本  |
-| \<dubbo:servic> | version   | version        | string      |    可选    | 0.0.0     | 服务发现 |服务版本，建议使用两位数字版本，如：1.0，通常在接口不兼容时版本号才需要升级|  1.0.0以上版本  |
+| \<dubbo:servic> | interface |                | class       |    必填    |           | 服务发现 |服务接口名         | 1.0.0以上版本   |
+| \<dubbo:servic> | ref       |                | object      |    必填    |           | 服务发现 |服务对象实现引用    | 1.0.0以上版本   |
+| \<dubbo:servic> | version   | version        | string      |    可选    | 0.0.0     | 服务发现 |服务版本，建议使用两位数字版本，如：1.0，通常在接口不兼容时版本号才需要升级| 1.0.0以上版本  |
+| \<dubbo:servic> | group     | group          | string      |    可选    |           | 服务发现 |服务分组，当一个接口有多个实现，可以用分组区分| 1.0.7以上版本  |
