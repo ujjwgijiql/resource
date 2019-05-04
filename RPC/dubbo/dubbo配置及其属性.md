@@ -33,10 +33,11 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 配置类：com.alibaba.dubbo.config.ServiceConfig  
 
 <style>
-table tr:nth-child(2n) {
-  background-color: #F8F8F8;
-}
+  table th:nth-of-type(3) {
+    background-color: #F8F8F8;
+  }
 </style>
+
 |       标签       |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
 |:---------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
 | \<dubbo:servic> | interface |                | class       |    必填    |           | 服务发现 |服务接口名         |  1.0.0以上版本  |
