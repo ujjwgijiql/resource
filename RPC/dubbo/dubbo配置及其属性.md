@@ -33,8 +33,8 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 配置类：com.alibaba.dubbo.config.ServiceConfig  
 
 <style>
-table th:first-of-type {
-	width: 100px;
+table tr:nth-child(2n) {
+  background-color: #F8F8F8;
 }
 </style>
 |       标签       |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
