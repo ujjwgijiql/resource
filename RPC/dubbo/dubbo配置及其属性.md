@@ -32,11 +32,15 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 服务提供者暴露服务配置：  
 配置类：com.alibaba.dubbo.config.ServiceConfig  
 
-<style> table th:first-of-type { width: 100px; } </style>
-
 |       标签       |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
 |:---------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
 | \<dubbo:servic> | interface |                | class       |    必填    |           | 服务发现 |服务接口名         | 1.0.0以上版本   |
 | \<dubbo:servic> | ref       |                | object      |    必填    |           | 服务发现 |服务对象实现引用    | 1.0.0以上版本   |
-| \<dubbo:servic> | version   | version        | string      |    可选    | 0.0.0     | 服务发现 |服务版本，建议使用两位数字版本，如：1.0，通常在接口不兼容时版本号才需要升级| 1.0.0以上版本  |
+| \<dubbo:servic> | version   | version        | string      |    可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | 0.0.0     | 服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |服务版本，建议使用两位数字版本，如：1.0，通常在接口不兼容时版本号才需要升级| 1.0.0以上版本  |
 | \<dubbo:servic> | group     | group          | string      |    可选    |           | 服务发现 |服务分组，当一个接口有多个实现，可以用分组区分| 1.0.7以上版本  |
+| \<dubbo:servic> | path      | <path>         | string      |    可选    |缺省为接口名| 服务发现 |服务路径 (注意：1.0不支持自定义路径，总是使用接口名，如果有1.0调2.0，配置服务路径可能不兼容)| 1.0.12以上版本  |
+| \<dubbo:servic> | delay     | delay          | int         |    可选    |0          | 性能调优 |延迟注册服务时间(毫秒) ，设为-1时，表示延迟到Spring容器初始化完成时暴露服务| 1.0.14以上版本  |
+| \<dubbo:servic> | timeout   | timeout        | int         |    可选    |1000       | 性能调优 |远程服务调用超时时间(毫秒)| 2.0.0以上版本  |
+| \<dubbo:servic> | retries   | retries        | int         |    可选    |2          | 性能调优 |远程服务调用重试次数，不包括第一次调用，不需要重试请设为0| 2.0.0以上版本  |
+| \<dubbo:servic> |connections| connections    | int         |    可选    |100        | 性能调优 |对每个提供者的最大连接数，rmi、http、hessian等短连接协议表示限制连接数，dubbo等长连接协表示建立的长连接个数| 2.0.0以上版本  |
+| \<dubbo:servic> |loadbalance| loadbalance    | string      |    可选    |random     | 性能调优 |负载均衡策略，可选值：random,roundrobin,leastactive，分别表示：随机，轮循，最少活跃调用| 2.0.0以上版本  |
