@@ -66,14 +66,14 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:servic> | layer     | layer          | string      |    可选    |           | 服务治理 |服务提供者所在的分层。如：biz、dao、intl:web、china:acton。| 2.0.7以上版本  |
 | \<dubbo:servic> | register  | register       | boolean     |    可选    | true      | 服务治理 |该协议的服务是否注册到注册中心| 2.0.8以上版本  |
 &nbsp;&nbsp;
-
+&nbsp;&nbsp;
 ## \<dubbo:reference/\>
 服务消费者引用服务配置：  
 配置类：com.alibaba.dubbo.config.ReferenceConfig
 
 |         标签        |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
 |:------------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
-| \<dubbo:reference> | id        |                | string      |    必填    |           | 配置关联 |服务引用BeanId    | 1.0.0以上版本   |
+| \<dubbo:reference> | id        |                | string      |    可选    |           | 配置关联 |服务引用BeanId    | 1.0.0以上版本   |
 | \<dubbo:reference> | interface |                | class       |    必填    |           | 服务发现 |服务接口名         | 1.0.0以上版本   |
 | \<dubbo:reference> | version   | version        | string      |    可选    |           | 服务发现 |服务版本，与服务提供者的版本一致| 1.0.0以上版本   |
 | \<dubbo:reference> | group     | group          | string      |    可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    |           | 服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |服务分组，当一个接口有多个实现，可以用分组区分，必需和服务提供方一致| 1.0.7以上版本   |
@@ -100,3 +100,15 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:reference> | layer     | layer          | string      |    可选    |             | 服务治理 |服务调用者所在的分层。如：biz、dao、intl:web、china:acton。| 2.0.7以上版本   |
 | \<dubbo:reference> | init      | init           | boolean     |    可选    | false       | 性能调优 |是否在afterPropertiesSet()时饥饿初始化引用，否则等到有人注入或引用该实例时再初始化。| 2.0.10以上版本   |
 | \<dubbo:reference> | protocol  | protocol       | string      |    可选    | false       | 服力治理 |只调用指定协议的服务提供方，其它协议忽略。| 2.2.0以上版本   |
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+## \<dubbo:registry/\>
+注册中心配置：  
+配置类：com.alibaba.dubbo.config.RegistryConfig  
+说明：如果有多个不同的注册中心，可以声明多个<dubbo:registry>标签，  
+并在<dubbo:service>或<dubbo:reference>的registry属性指定使用的注册中心。  
+
+|         标签        |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
+|:------------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
+| \<dubbo:registry>  | id        |                | string      |    可选    |           | 配置关联 |注册中心引用BeanId，可以在<dubbo:service registry="">或<dubbo:reference registry="">中引用此ID| 1.0.16以上版本   |
+| \<dubbo:registry>  | address   | \<host:port>   | string      |    必填    |           | 服务发现 |注册中心服务器地址，如果地址没有端口缺省为9090，同一集群内的多个地址用逗号分隔，如：ip:port,ip:port，不同集群的注册中心，请配置多个<dubbo:registry>标签| 1.0.16以上版本   |
