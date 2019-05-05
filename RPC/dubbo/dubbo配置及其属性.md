@@ -104,6 +104,20 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 
 &nbsp;&nbsp;
 &nbsp;&nbsp;
+## \<dubbo:protocol/\>
+服务提供者协议配置：
+配置类：com.alibaba.dubbo.config.ProtocolConfig
+说明：如果需要支持多协议，可以声明多个<dubbo:protocol>标签，并在<dubbo:service>中通过protocol属性指定使用的协议。  
+
+|         标签        |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
+|:------------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
+| \<dubbo:protocol>  | id        |                | string      |    可选    | dubbo     | 配置关联 |协议BeanId，可以在<dubbo:service protocol="">中引用此ID，如果ID不填，缺省和name属性值一样，重复则在name后加序号。| 2.0.5以上版本   |
+| \<dubbo:protocol>  | name      | \<protocol>    | string      |    必填    | dubbo     | 性能调优 | 协议名称          | 2.0.5以上版本   |
+| \<dubbo:protocol>  | port      | \<port>        | int         |    可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | dubbo协议缺省端口为20880，rmi协议缺省端口为1099，http和hessian协议缺省端口为80 
+如果配置为-1 或者 没有配置port，则会分配一个没有被占用的端口。Dubbo 2.4.0+，分配的端口在协议缺省端口的基础上增长，确保端口段可控。 | 服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 服务端口 | 2.0.5以上版本   |
+
+&nbsp;&nbsp;
+&nbsp;&nbsp;
 ## \<dubbo:registry/\>
 注册中心配置：  
 配置类：com.alibaba.dubbo.config.RegistryConfig  
