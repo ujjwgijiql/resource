@@ -77,4 +77,11 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:reference> | interface |                | class       |    必填    |           | 服务发现 |服务接口名         | 1.0.0以上版本   |
 | \<dubbo:reference> | version   | version        | string      |    可选    |           | 服务发现 |服务版本，与服务提供者的版本一致| 1.0.0以上版本   |
 | \<dubbo:reference> | group     | group          | string      |    可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    |           | 服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |服务分组，当一个接口有多个实现，可以用分组区分，必需和服务提供方一致| 1.0.7以上版本   |
-| \<dubbo:reference> | timeout   | timeout        | long        |    可选    |缺省使用<dubbo:consumer>的timeout| 性能调优 |服务方法调用超时时间(毫秒)| 1.0.5以上版本   |
+| \<dubbo:reference> | timeout   | timeout        | long        |    可选    |缺省使用\<dubbo:consumer\>的timeout| 性能调优 |服务方法调用超时时间(毫秒)| 1.0.5以上版本   |
+| \<dubbo:reference> | retries   | retries        | int         |    可选    |缺省使用\<dubbo:consumer\>的retries| 性能调优 |远程服务调用重试次数，不包括第一次调用，不需要重试请设为0| 2.0.0以上版本   |
+| \<dubbo:reference> |connections| connections    | int         |    可选    |缺省使用\<dubbo:consumer\>的connections| 性能调优 |对每个提供者的最大连接数，rmi、http、hessian等短连接协议表示限制连接数，dubbo等长连接协表示建立的长连接个数| 2.0.0以上版本   |
+| \<dubbo:reference> |loadbalance| loadbalance    | string      |    可选    |缺省使用\<dubbo:consumer\>的loadbalance| 性能调优 |负载均衡策略，可选值：random,roundrobin,leastactive，分别表示：随机，轮循，最少活跃调用| 2.0.0以上版本   |
+| \<dubbo:reference> | async     | async          | boolean     |    可选    |缺省使用\<dubbo:consumer\>的async| 性能调优 |是否异步执行，不可靠异步，只是忽略返回值，不阻塞执行线程| 2.0.0以上版本   |
+| \<dubbo:reference> | generic   | generic        | boolean     |    可选    |缺省使用\<dubbo:consumer\>的generic| 服务治理 |是否缺省泛化接口，如果为泛化接口，将返回GenericService| 2.0.0以上版本   |
+| \<dubbo:reference> | check     | check          | boolean     |    可选    |缺省使用\<dubbo:consumer\>的check| 服务治理 |启动时检查提供者是否存在，true报错，false忽略| 2.0.0以上版本   |
+| \<dubbo:reference> | url       | \<url\>        | string      |    可选    |              | 服务治理 |点对点直连服务提供者地址，将绕过注册中心| 1.0.6以上版本   |
