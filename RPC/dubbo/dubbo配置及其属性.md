@@ -59,7 +59,7 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:servic> | executes  | executes       | int         |    可选    | 0         | 性能调优 |服务提供者每服务每方法最大可并行执行请求数| 2.0.5以上版本  |
 | \<dubbo:servic> | actives   | actives        | int         |    可选    | 0         | 性能调优 |每服务消费者每服务每方法最大并发调用数| 2.0.5以上版本  |
 | \<dubbo:servic> | proxy     | proxy          | string      |    可选    | javassist | 性能调优 |生成动态代理方式，可选：jdk/javassist| 2.0.5以上版本  |
-| \<dubbo:servic> | cluster   | cluster        | string      |    可选    | failover  | 性能调优 |集群方式，可选：failover/failfast/failsafe/ failback/forking| 2.0.5以上版本  |
+| \<dubbo:servic> | cluster   | cluster        | string      |    可选    | failover  | 性能调优 |集群方式，可选：failover/failfast/ failsafe/failback/ forking| 2.0.5以上版本  |
 | \<dubbo:servic> | filter    | service. filter | string      |    可选    | default   | 性能调优 |服务提供方远程调用过程拦截器名称，多个名称用逗号分隔| 2.0.5以上版本  |
 | \<dubbo:servic> | listener  |exporter. listener| string      |    可选    | default   | 性能调优 |服务提供方导出服务监听器名称，多个名称用逗号分隔|            |
 | \<dubbo:servic> | protocol  |                | string      |    可选    |           | 配置关联 |使用指定的协议暴露服务，在多协议时使用，值为<dubbo:protocol>的id属性，多个协议ID用逗号分隔| 2.0.5以上版本  |
