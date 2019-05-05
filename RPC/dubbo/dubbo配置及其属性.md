@@ -85,3 +85,11 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:reference> | generic   | generic        | boolean     |    可选    |缺省使用\<dubbo:consumer\>的generic| 服务治理 |是否缺省泛化接口，如果为泛化接口，将返回GenericService| 2.0.0以上版本   |
 | \<dubbo:reference> | check     | check          | boolean     |    可选    |缺省使用\<dubbo:consumer\>的check| 服务治理 |启动时检查提供者是否存在，true报错，false忽略| 2.0.0以上版本   |
 | \<dubbo:reference> | url       | \<url\>        | string      |    可选    |              | 服务治理 |点对点直连服务提供者地址，将绕过注册中心| 1.0.6以上版本   |
+| \<dubbo:reference> | stub      | stub           |class/boolean|    可选    |              | 服务治理 |服务接口客户端本地代理类名，用于在客户端执行本地逻辑，如本地缓存等，该本地代理类的构造函数必须允许传入远程代理对象，构造函数如：public XxxServiceLocal(XxxService xxxService)| 2.0.0以上版本   |
+| \<dubbo:reference> | mock      | mock           |class/boolean|    可选    |              | 服务治理 |服务接口调用失败Mock实现类名，该Mock类必须有一个无参构造函数，与Local的区别在于，Local总是被执行，而Mock只在出现非业务异常(比如超时，网络异常等)时执行，Local在远程调用之前执行，Mock在远程调用后执行。| 1.0.13以上版本   |
+| \<dubbo:reference> | cache     | cache          |string/boolean|    可选    |              | 服务治理 |以调用参数为key，缓存返回结果，可选：lru, threadlocal, jcache等| 2.1.0以上版本   |
+| \<dubbo:reference> | validation| validation     | boolean     |    可选    |              | 服务治理 |是否启用JSR303标准注解验证，如果启用，将对方法参数上的注解进行校验| 2.1.0以上版本   |
+| \<dubbo:reference> | proxy     | proxy          | boolean     |    可选    | javassist    | 性能调优 |选择动态代理实现策略，可选：javassist, jdk| 2.0.2以上版本   |
+| \<dubbo:reference> | client    | client         | string      |    可选    |              | 性能调优 |客户端传输类型设置，如Dubbo协议的netty或mina。| 2.0.0以上版本   |
+| \<dubbo:reference> | registry  |                | string      |    可选    |缺省将从所有注册中心获服务列表后合并结果| 配置关联 |从指定注册中心注册获取服务列表，在多个注册中心时使用，值为<dubbo:registry>的id属性，多个注册中心ID用逗号分隔| 2.0.0以上版本   |
+| \<dubbo:reference> | owner     | owner          | string      |    可选    |              | 服务治理 |调用服务负责人，用于服务治理，请填写负责人公司邮箱前缀| 2.0.5以上版本   |
