@@ -43,7 +43,7 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:servic> | timeout   | timeout        | int         |    可选    |1000       | 性能调优 |远程服务调用超时时间(毫秒)| 2.0.0以上版本  |
 | \<dubbo:servic> | retries   | retries        | int         |    可选    |2          | 性能调优 |远程服务调用重试次数，不包括第一次调用，不需要重试请设为0| 2.0.0以上版本  |
 | \<dubbo:servic> |connections| connections    | int         |    可选    |100        | 性能调优 |对每个提供者的最大连接数，rmi、http、hessian等短连接协议表示限制连接数，dubbo等长连接协表示建立的长连接个数| 2.0.0以上版本  |
-| \<dubbo:servic> |loadbalance| loadbalance    | string      |    可选    |random     | 性能调优 |负载均衡策略，可选值：random,roundrobin,leastactive，分别表示：随机，轮循，最少活跃调用| 2.0.0以上版本  |
+| \<dubbo:servic> |loadbalance| loadbalance    | string      |    可选    |random     | 性能调优 |负载均衡策略，可选值：random,roundrobin, leastactive，分别表示：随机，轮循，最少活跃调用| 2.0.0以上版本  |
 | \<dubbo:servic> |async      | async          | boolean     |    可选    |false      | 性能调优 |是否缺省异步执行，不可靠异步，只是忽略返回值，不阻塞执行线程| 2.0.0以上版本  |
 | \<dubbo:servic> |stub       | stub           |class/boolean|    可选    |false      | 服务治理 |设为true，表示使用缺省代理类名，即：接口名 + Local后缀，服务接口客户端本地代理类名，用于在客户端执行本地逻辑，如本地缓存等，该本地代理类的构造函数必须允许传入远程代理对象，构造函数如：public XxxServiceLocal(XxxService xxxService)| 2.0.0以上版本  |
 | \<dubbo:servic> |mock       | mock           |class/boolean|    可选    |false      | 服务治理 |设为true，表示使用缺省Mock类名，即：接口名 + Mock后缀，服务接口调用失败Mock实现类，该Mock类必须有一个无参构造函数，与Local的区别在于，Local总是被执行，而Mock只在出现非业务异常(比如超时，网络异常等)时执行，Local在远程调用之前执行，Mock在远程调用后执行。| 2.0.0以上版本  |
@@ -59,7 +59,7 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:servic> | executes  | executes       | int         |    可选    | 0         | 性能调优 |服务提供者每服务每方法最大可并行执行请求数| 2.0.5以上版本  |
 | \<dubbo:servic> | actives   | actives        | int         |    可选    | 0         | 性能调优 |每服务消费者每服务每方法最大并发调用数| 2.0.5以上版本  |
 | \<dubbo:servic> | proxy     | proxy          | string      |    可选    | javassist | 性能调优 |生成动态代理方式，可选：jdk/javassist| 2.0.5以上版本  |
-| \<dubbo:servic> | cluster   | cluster        | string      |    可选    | failover  | 性能调优 |集群方式，可选：failover/failfast/failsafe/failback/forking| 2.0.5以上版本  |
+| \<dubbo:servic> | cluster   | cluster        | string      |    可选    | failover  | 性能调优 |集群方式，可选：failover/failfast/failsafe/ failback/forking| 2.0.5以上版本  |
 | \<dubbo:servic> | filter    | service.filter | string      |    可选    | default   | 性能调优 |服务提供方远程调用过程拦截器名称，多个名称用逗号分隔| 2.0.5以上版本  |
 | \<dubbo:servic> | listener  |exporter.listener| string      |    可选    | default   | 性能调优 |服务提供方导出服务监听器名称，多个名称用逗号分隔|            |
 | \<dubbo:servic> | protocol  |                | string      |    可选    |           | 配置关联 |使用指定的协议暴露服务，在多协议时使用，值为<dubbo:protocol>的id属性，多个协议ID用逗号分隔| 2.0.5以上版本  |
