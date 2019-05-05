@@ -64,7 +64,7 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:servic> | listener  |exporter. listener| string      |    可选    | default   | 性能调优 |服务提供方导出服务监听器名称，多个名称用逗号分隔|            |
 | \<dubbo:servic> | protocol  |                | string      |    可选    |           | 配置关联 |使用指定的协议暴露服务，在多协议时使用，值为<dubbo:protocol>的id属性，多个协议ID用逗号分隔| 2.0.5以上版本  |
 | \<dubbo:servic> | layer     | layer          | string      |    可选    |           | 服务治理 |服务提供者所在的分层。如：biz、dao、intl:web、china:acton。| 2.0.7以上版本  |
-| \<dubbo:servic> | register  | register       | boolean     |    可选    | true      | 服务治理 |该协议的服务是否注册到注册中心| 2.0.8以上版本  |
+| \<dubbo:servic> | register  | register       | boolean     |    可选    | true      | 服务治理 |该协议的服务是否注册到注册中心| 2.0.8以上版本  |  
 &nbsp;&nbsp;
 &nbsp;&nbsp;
 ## \<dubbo:reference/\>
