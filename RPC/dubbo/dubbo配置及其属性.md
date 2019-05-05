@@ -52,3 +52,10 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:servic> | provider  |                | string      |    可选    |缺使用第一个provider配置| 配置关联 |指定provider，值为<dubbo:provider>的id属性| 2.0.0以上版本  |
 | \<dubbo:servic> | deprecated| deprecated     | boolean     |    可选    |false      | 服务治理 |服务是否过时，如果设为true，消费方引用时将打印服务过时警告error日志| 2.0.5以上版本  |
 | \<dubbo:servic> | dynamic   | dynamic        | boolean     |    可选    |true       | 服务治理 |服务是否动态注册，如果设为false，注册后将显示后disable状态，需人工启用，并且服务提供者停止时，也不会自动取消册，需人工禁用。| 2.0.5以上版本  |
+| \<dubbo:servic> | accesslog | accesslog      |string/boolean|    可选    |false      | 服务治理 |设为true，将向logger中输出访问日志，也可填写访问日志文件路径，直接把访问日志输出到指定文件| 2.0.5以上版本  |
+| \<dubbo:servic> | owner     | owner          | string      |    可选    |           | 服务治理 |服务负责人，用于服务治理，请填写负责人公司邮箱前缀| 2.0.5以上版本  |
+| \<dubbo:servic> | document  | document       | string      |    可选    |           | 服务治理 | 服务文档URL | 2.0.5以上版本  |
+| \<dubbo:servic> | weight    | weight         | int         |    可选    |           | 性能调优 | 服务权重 | 2.0.5以上版本  |
+| \<dubbo:servic> | executes  | executes       | int         |    可选    | 0         | 性能调优 |服务提供者每服务每方法最大可并行执行请求数| 2.0.5以上版本  |
+| \<dubbo:servic> | actives   | actives        | int         |    可选    | 0         | 性能调优 |每服务消费者每服务每方法最大并发调用数| 2.0.5以上版本  |
+| \<dubbo:servic> | proxy     | proxy          | string      |    可选    | javassist | 性能调优 |生成动态代理方式，可选：jdk/javassist| 2.0.5以上版本  |
