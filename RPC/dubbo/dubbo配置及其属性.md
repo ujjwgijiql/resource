@@ -112,3 +112,5 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 |:------------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
 | \<dubbo:registry>  | id        |                | string      |    可选    |           | 配置关联 |注册中心引用BeanId，可以在<dubbo:service registry="">或<dubbo:reference registry="">中引用此ID| 1.0.16以上版本   |
 | \<dubbo:registry>  | address   | \<host:port>   | string      |    必填    |           | 服务发现 |注册中心服务器地址，如果地址没有端口缺省为9090，同一集群内的多个地址用逗号分隔，如：ip:port,ip:port，不同集群的注册中心，请配置多个<dubbo:registry>标签| 1.0.16以上版本   |
+| \<dubbo:registry>  | protocol  | \<protocol>    | string      |    可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | dubbo     | 服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |注册中心地址协议，支持dubbo, http, local三种协议，分别表示，dubbo地址，http地址，本地注册中心| 2.0.0以上版本   |
+| \<dubbo:registry>  | port       | \<port>       | int         |    可选    | 9090      | 服务发现 |注册中心缺省端口，当address没有带端口时使用此端口做为缺省值| 2.0.0以上版本   |
