@@ -189,3 +189,17 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:application> |environment| environment    | string      |    可选    |           | 服务治理 | 应用环境，如：develop/test/product，不同环境使用不同的缺省值，以及作为只用于开发测试功能的限制条件| 2.0.0以上版本   |
 | \<dubbo:application> | compiler  | compiler       | string      |    可选    | javassist | 性能优化 | Java字节码编译器，用于动态类的生成，可选：jdk或javassist| 2.1.0以上版本   |
 | \<dubbo:application> | logger    | logger         | string      |    可选    | slf4j     | 性能优化 | 日志输出方式，可选：slf4j,jcl,log4j,jdk| 2.2.0以上版本   |
+
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+## \<dubbo:module/\>
+模块信息配置：  
+配置类：com.alibaba.dubbo.config.ModuleConfig
+
+|      标签       |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |     兼容性   |
+|:------------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
+| \<dubbo:module> | name      | module         | string     |    必填    |           | 服务治理 | 当前模块名称，用于注册中心计算模块间依赖关系| 2.2.0以上版本   |
+| \<dubbo:module> | version   | module. version| string     |    可选    |           | 服务治理 | 当前模块的版本  | 2.2.0以上版本   |
+| \<dubbo:module> | owner     | owner          | string     |    可选    |           | 服务治理 | 模块负责人，用于服务治理，请填写负责人公司邮箱前缀| 2.2.0以上版本   |
+| \<dubbo:module> |organization| organization  | string     |    可选    |           | 服务治理 | 组织名称(BU或部门)，用于注册中心区分服务来源，此配置项建议不要使用autoconfig，直接写死在配置中，比如china,intl,itu,crm,asc,dw,aliexpress等| 2.2.0以上版本   |
+
