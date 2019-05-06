@@ -217,3 +217,15 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:provider> | host     | \<host>        | string      |    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | 自动查找本机IP| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 服务主机名，多网卡选择或指定VIP及域名时使用，为空则自动查找本机IP，建议不要配置，让Dubbo自动获取本机IP | 1.0.16以上版本 |
 | \<dubbo:provider> | threads | threads         | int         |    可选    | 100       | 性能调优 | 服务线程池大小(固定大小) | 1.0.16以上版本 |
 | \<dubbo:provider> | payload | payload         | int         |    可选    | 88388608(=8M) | 性能调优 | 请求及响应数据包大小限制，单位：字节 | 2.0.0以上版本 |
+| \<dubbo:provider> | path    | \<path>         | string      |    可选    |           | 服务发现 | 提供者上下文路径，为服务path的前缀 | 2.0.0以上版本 |
+| \<dubbo:provider> | server  | server          | string      |    可选    | dubbo协议缺省为netty，http协议缺省为servlet| 性能调优 | 协议的服务器端实现类型，比如：dubbo协议的mina,netty等，http协议的jetty,servlet等 | 2.0.0以上版本 |
+| \<dubbo:provider> | client  | client          | string      |    可选    | ddubbo协议缺省为netty| 性能调优 | 协议的客户端实现类型，比如：dubbo协议的mina,netty等 | 2.0.0以上版本 |
+| \<dubbo:provider> | codec   | codec           | string      |    可选    | dubbo     | 性能调优 | 协议编码方式 | 2.0.0以上版本 |
+| \<dubbo:provider> |serialization|serialization| string      |    可选    | dubbo协议缺省为hessian2，rmi协议缺省为java，http协议缺省为json| 性能调优 | 协议序列化方式，当协议支持多种序列化方式时使用，比如：dubbo协议的dubbo, hessian2, java, compactedjava，以及http协议的json,xml等 | 2.0.5以上版本 |
+| \<dubbo:provider> | default |                 | boolean     |    可选    | false     | 配置关联 | 是否为缺省协议，用于多协议 | 1.0.16以上版本 |
+| \<dubbo:provider> | filter  | service. filter | string      |    可选    |           | 性能调优 | 服务提供方远程调用过程拦截器名称，多个名称用逗号分隔 | 2.0.5以上版本 |
+| \<dubbo:provider> | listener|exporter. listener| string      |    可选    |           | 性能调优 | 服务提供方导出服务监听器名称，多个名称用逗号分隔 | 2.0.5以上版本 |
+| \<dubbo:provider> |threadpool| threadpool       | string      |    可选    | fixed     | 性能调优 | 线程池类型，可选：fixed/cached | 2.0.5以上版本 |
+| \<dubbo:provider> | accepts | accepts         | int         |    可选    | 0         | 性能调优 | 服务提供者最大可接受连接数 | 2.0.5以上版本 |
+| \<dubbo:provider> | version | version         | string      |    可选    | 0.0.0     | 服务发现 | 服务版本，建议使用两位数字版本，如：1.0，通常在接口不兼容时版本号才需要升级 | 2.0.5以上版本 |
+| \<dubbo:provider> | group   | group           | string      |    可选    |           | 服务发现 | 服务分组，当一个接口有多个实现，可以用分组区分 | 2.0.5以上版本 |
