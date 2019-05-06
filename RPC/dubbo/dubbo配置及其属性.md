@@ -231,3 +231,15 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:provider> | accepts | accepts         | int         |    可选    | 0         | 性能调优 | 服务提供者最大可接受连接数 | 2.0.5以上版本 |
 | \<dubbo:provider> | version | version         | string      |    可选    | 0.0.0     | 服务发现 | 服务版本，建议使用两位数字版本，如：1.0，通常在接口不兼容时版本号才需要升级 | 2.0.5以上版本 |
 | \<dubbo:provider> | group   | group           | string      |    可选    |           | 服务发现 | 服务分组，当一个接口有多个实现，可以用分组区分 | 2.0.5以上版本 |
+| \<dubbo:provider> | delay   | delay           | int         |    可选    | 0         | 性能调优 | 延迟注册服务时间(毫秒)- ，设为-1时，表示延迟到Spring容器初始化完成时暴露服务 | 2.0.5以上版本 |
+| \<dubbo:provider> | timeout | default. timeout| int         |    可选    | 1000      | 性能调优 | 远程服务调用超时时间(毫秒) | 2.0.5以上版本 |
+| \<dubbo:provider> | retries | default. retries| int         |    可选    | 2         | 性能调优 | 远程服务调用重试次数，不包括第一次调用，不需要重试请设为0 | 2.0.5以上版本 |
+| \<dubbo:provider> |connections|default. connections| int         |    可选    | 0         | 性能调优 | 对每个提供者的最大连接数，rmi、 http、 hessian等短连接协议表示限制连接数，dubbo等长连接协表示建立的长连接个数 | 2.0.5以上版本 |
+| \<dubbo:provider> |loadbalance|default. loadbalance| string      |    可选    | random    | 性能调优 | 负载均衡策略，可选值：random, roundrobin, leastactive，分别表示：随机，轮循，最少活跃调用 | 2.0.5以上版本 |
+| \<dubbo:provider> | async   | default. async  | boolean     |    可选    | false     | 性能调优 | 是否缺省异步执行，不可靠异步，只是忽略返回值，不阻塞执行线程 | 2.0.5以上版本 |
+| \<dubbo:provider> | stub    | stub            | boolean     |    可选    | false     | 服务治理 | 设为true，表示使用缺省代理类名，即：接口名 + Local后缀。 | 2.0.5以上版本 |
+| \<dubbo:provider> | mock    | mock            | boolean     |    可选    | false     | 服务治理 | 设为true，表示使用缺省Mock类名，即：接口名 + Mock后缀。 | 2.0.5以上版本 |
+| \<dubbo:provider> | token   | token           | boolean     |    可选    | false     | 服务治理 | 令牌验证，为空表示不开启，如果为true，表示随机生成动态令牌 | 2.0.5以上版本 |
+| \<dubbo:provider> | registry| registry        | string      |    可选    | 缺省向所有registry注册| 配置关联 | 向指定注册中心注册，在多个注册中心时使用，值为<dubbo:registry>的id属性，多个注册中心ID用逗号分隔，如果不想将该服务注册到任何registry，可将值设为N/A | 2.0.5以上版本 |
+| \<dubbo:provider> | dynamic | dynamic         | boolean     |    可选    | true      | 服务治理 | 服务是否动态注册，如果设为false，注册后将显示后disable状态，需人工启用，并且服务提供者停止时，也不会自动取消册，需人工禁用。 | 2.0.5以上版本 |
+| \<dubbo:provider> |accesslog| accesslog       |string/ boolean|    可选    | false     | 服务治理 | 设为true，将向logger中输出访问日志，也可填写访问日志文件路径，直接把访问日志输出到指定文件 | 2.0.5以上版本 |
