@@ -36,7 +36,7 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 |:---------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
 | \<dubbo:servic> | interface |                | class       |    必填    |           | 服务发现 |服务接口名         | 1.0.0以上版本   |
 | \<dubbo:servic> | ref       |                | object      |    必填    |           | 服务发现 |服务对象实现引用    | 1.0.0以上版本   |
-| \<dubbo:servic> | version   | version        | string      |    可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | 0.0.0     | 服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |服务版本，建议使用两位数字版本，如：1.0，通常在接口不兼容时版本号才需要升级| 1.0.0以上版本  |
+| \<dubbo:servic> | version   | version        | string      |    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | 0.0.0     | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |服务版本，建议使用两位数字版本，如：1.0，通常在接口不兼容时版本号才需要升级| 1.0.0以上版本  |
 | \<dubbo:servic> | group     | group          | string      |    可选    |           | 服务发现 |服务分组，当一个接口有多个实现，可以用分组区分| 1.0.7以上版本  |
 | \<dubbo:servic> | path      | <path>         | string      |    可选    |缺省为接口名| 服务发现 |服务路径 (注意：1.0不支持自定义路径，总是使用接口名，如果有1.0调2.0，配置服务路径可能不兼容)| 1.0.12以上版本  |
 | \<dubbo:servic> | delay     | delay          | int         |    可选    |0          | 性能调优 |延迟注册服务时间(毫秒) ，设为-1时，表示延迟到Spring容器初始化完成时暴露服务| 1.0.14以上版本  |
@@ -77,7 +77,7 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:reference> | id        |                | string      |    可选    |           | 配置关联 |服务引用BeanId    | 1.0.0以上版本   |
 | \<dubbo:reference> | interface |                | class       |    必填    |           | 服务发现 |服务接口名         | 1.0.0以上版本   |
 | \<dubbo:reference> | version   | version        | string      |    可选    |           | 服务发现 |服务版本，与服务提供者的版本一致| 1.0.0以上版本   |
-| \<dubbo:reference> | group     | group          | string      |    可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    |           | 服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |服务分组，当一个接口有多个实现，可以用分组区分，必需和服务提供方一致| 1.0.7以上版本   |
+| \<dubbo:reference> | group     | group          | string      |    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    |           | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |服务分组，当一个接口有多个实现，可以用分组区分，必需和服务提供方一致| 1.0.7以上版本   |
 | \<dubbo:reference> | timeout   | timeout        | long        |    可选    |缺省使用\<dubbo: consumer\>的timeout| 性能调优 |服务方法调用超时时间(毫秒)| 1.0.5以上版本   |
 | \<dubbo:reference> | retries   | retries        | int         |    可选    |缺省使用\<dubbo: consumer\>的retries| 性能调优 |远程服务调用重试次数，不包括第一次调用，不需要重试请设为0| 2.0.0以上版本   |
 | \<dubbo:reference> |connections| connections    | int         |    可选    |缺省使用\<dubbo: consumer\>的connections| 性能调优 |对每个提供者的最大连接数，rmi、http、hessian等短连接协议表示限制连接数，dubbo等长连接协表示建立的长连接个数| 2.0.0以上版本   |
@@ -113,7 +113,7 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 |:------------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
 | \<dubbo:protocol>  | id        |                | string      |    可选    | dubbo     | 配置关联 |协议BeanId，可以在<dubbo:service protocol="">中引用此ID，如果ID不填，缺省和name属性值一样，重复则在name后加序号。| 2.0.5以上版本   |
 | \<dubbo:protocol>  | name      | \<protocol>    | string      |    必填    | dubbo     | 性能调优 | 协议名称          | 2.0.5以上版本   |
-| \<dubbo:protocol>  | port      | \<port>        | int         |    可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | dubbo协议缺省端口为20880，rmi协议缺省端口为1099，http和hessian协议缺省端口为80 如果配置为-1 或者 没有配置port，则会分配一个没有被占用的端口。Dubbo 2.4.0+，分配的端口在协议缺省端口的基础上增长，确保端口段可控。 | 服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 服务端口 | 2.0.5以上版本   |
+| \<dubbo:protocol>  | port      | \<port>        | int         |    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | dubbo协议缺省端口为20880，rmi协议缺省端口为1099，http和hessian协议缺省端口为80 如果配置为-1 或者 没有配置port，则会分配一个没有被占用的端口。Dubbo 2.4.0+，分配的端口在协议缺省端口的基础上增长，确保端口段可控。 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 服务端口 | 2.0.5以上版本   |
 | \<dubbo:protocol>  | host      | \<host>        | string      |    可选    |自动查找本机IP| 服务发现 | 服务主机名，多网卡选择或指定VIP及域名时使用，为空则自动查找本机IP，-建议不要配置，让Dubbo自动获取本机IP| 2.0.5以上版本   |
 | \<dubbo:protocol>  | threadpool| threadpool     | string      |    可选    | fixed     | 性能调优 | 线程池类型，可选：fixed/cached| 2.0.5以上版本   |
 | \<dubbo:protocol>  | threads   | threads        | int         |    可选    | 100       | 性能调优 | 服务线程池大小(固定大小)| 2.0.5以上版本   |
@@ -148,7 +148,7 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 |:------------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
 | \<dubbo:registry>  | id        |                | string      |    可选    |           | 配置关联 |注册中心引用BeanId，可以在<dubbo:service registry="">或<dubbo:reference registry="">中引用此ID| 1.0.16以上版本   |
 | \<dubbo:registry>  | address   | \<host:port>   | string      |    必填    |           | 服务发现 |注册中心服务器地址，如果地址没有端口缺省为9090，同一集群内的多个地址用逗号分隔，如：ip:port,ip:port，不同集群的注册中心，请配置多个<dubbo:registry>标签| 1.0.16以上版本   |
-| \<dubbo:registry>  | protocol  | \<protocol>    | string      |    可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | dubbo     | 服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |注册中心地址协议，支持dubbo, http, local三种协议，分别表示，dubbo地址，http地址，本地注册中心| 2.0.0以上版本   |
+| \<dubbo:registry>  | protocol  | \<protocol>    | string      |    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | dubbo     | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |注册中心地址协议，支持dubbo, http, local三种协议，分别表示，dubbo地址，http地址，本地注册中心| 2.0.0以上版本   |
 | \<dubbo:registry>  | port       | \<port>       | int         |    可选    | 9090      | 服务发现 |注册中心缺省端口，当address没有带端口时使用此端口做为缺省值| 2.0.0以上版本   |
 | \<dubbo:registry>  | username   | \<username>   | string      |    可选    |           | 服务治理 |登录注册中心用户名，如果注册中心不需要验证可不填| 2.0.0以上版本   |
 | \<dubbo:registry>  | password   | \<password>   | string      |    可选    |           | 服务治理 |登录注册中心密码，如果注册中心不需要验证可不填| 2.0.0以上版本   |
@@ -181,7 +181,7 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 
 |         标签          |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |     兼容性   |
 |:------------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
-| \<dubbo:application> | name      | application    | string      |    必填<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    |           | 服务治理<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 当前应用名称，用于注册中心计算应用间依赖关系，注意：消费者和提供者应用名不要一样，此参数不是匹配条件，你当前项目叫什么名字就填什么，和提供者消费者角色无关，比如：kylin应用调用了morgan应用的服务，则kylin项目配成kylin，morgan项目配成morgan，可能kylin也提供其它服务给别人使用，但kylin项目永远配成kylin，这样注册中心将显示kylin依赖于morgan| 1.0.16以上版本   |
+| \<dubbo:application> | name      | application    | string      |    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>必填<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    |           | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>服务治理<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 当前应用名称，用于注册中心计算应用间依赖关系，注意：消费者和提供者应用名不要一样，此参数不是匹配条件，你当前项目叫什么名字就填什么，和提供者消费者角色无关，比如：kylin应用调用了morgan应用的服务，则kylin项目配成kylin，morgan项目配成morgan，可能kylin也提供其它服务给别人使用，但kylin项目永远配成kylin，这样注册中心将显示kylin依赖于morgan| 1.0.16以上版本   |
 | \<dubbo:application> | version   | application. version| string      |    可选    |           | 服务治理 | 当前应用的版本  | 2.2.0以上版本   |
 | \<dubbo:application> | owner     | owner          | string      |    可选    |           | 服务治理 | 应用负责人，用于服务治理，请填写负责人公司邮箱前缀| 2.0.5以上版本   |
 | \<dubbo:application> |organization| organization   | string      |    可选    |           | 服务治理 | 组织名称(BU或部门)，用于注册中心区分服务来源，此配置项建议不要使用autoconfig，直接写死在配置中，比如china, intl, itu, crm, asc, dw, aliexpress等| 2.0.0以上版本   |
@@ -201,5 +201,5 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:module> | name      | module         | string     |    必填    |           | 服务治理 | 当前模块名称，用于注册中心计算模块间依赖关系| 2.2.0以上版本   |
 | \<dubbo:module> | version   | module. version| string     |    可选    |           | 服务治理 | 当前模块的版本  | 2.2.0以上版本   |
 | \<dubbo:module> | owner     | owner          | string     |    可选    |           | 服务治理 | 模块负责人，用于服务治理，请填写负责人公司邮箱前缀| 2.2.0以上版本   |
-| \<dubbo:module> |organization| organization  | string     |    可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    |           | 服务治理<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 组织名称(BU或部门)，用于注册中心区分服务来源，此配置项建议不要使用autoconfig，直接写死在配置中，比如china, intl, itu, crm, asc, dw, aliexpress等| 2.2.0以上版本   |
+| \<dubbo:module> |organization| organization  | string     |    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    |           | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>服务治理<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 组织名称(BU或部门)，用于注册中心区分服务来源，此配置项建议不要使用autoconfig，直接写死在配置中，比如china, intl, itu, crm, asc, dw, aliexpress等| 2.2.0以上版本   |
 
