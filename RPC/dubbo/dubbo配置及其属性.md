@@ -123,8 +123,18 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:protocol>  | codec     | codec          | string      |    可选    | dubbo     | 性能调优 | 协议编码方式 | 2.0.5以上版本   |
 | \<dubbo:protocol>  | serialization| serialization| string      |    可选    | dubbo协议缺省为hessian2，rmi协议缺省为java，http协议缺省为json| 性能调优 | 协议序列化方式，当协议支持多种序列化方式时使用，比如：dubbo协议的dubbo,hessian2,java,compactedjava，以及http协议的json等| 2.0.5以上版本   |
 | \<dubbo:protocol>  | accesslog | accesslog      | string/ boolean|    可选    |        | 服务治理 | 设为true，将向logger中输出访问日志，也可填写访问日志文件路径，直接把访问日志输出到指定文件| 2.0.5以上版本   |
-| \<dubbo:protocol>  | path     | \<path>        | string       |    可选    |           | 服务发现 | 提供者上下文路径，为服务path的前缀| 2.0.5以上版本   |
-| \<dubbo:protocol>  | transporter | transporter | string       |    可选    | dubbo协议缺省为netty| 性能调优 | 协议的服务端和客户端实现类型，比如：dubbo协议的mina,netty等，可以分拆为server和client配置| 2.0.5以上版本   |
+| \<dubbo:protocol>  | path     | \<path>         | string      |    可选    |           | 服务发现 | 提供者上下文路径，为服务path的前缀| 2.0.5以上版本   |
+| \<dubbo:protocol>  | transporter | transporter  | string      |    可选    | dubbo协议缺省为netty| 性能调优 | 协议的服务端和客户端实现类型，比如：dubbo协议的mina,netty等，可以分拆为server和client配置| 2.0.5以上版本   |
+| \<dubbo:protocol>  | server    | server         | string      |    可选    | dubbo协议缺省为netty，http协议缺省为servlet| 性能调优 | 协议的服务器端实现类型，比如：dubbo协议的mina,netty等，http协议的jetty,servlet等| 2.0.5以上版本   |
+| \<dubbo:protocol>  | client    | client         | string      |    可选    | dubbo协议缺省为netty| 性能调优 | 协议的客户端实现类型，比如：dubbo协议的mina,netty等| 2.0.5以上版本   |
+| \<dubbo:protocol>  | dispatcher| dispatcher     | string      |    可选    | dubbo协议缺省为all| 性能调优 | 协议的消息派发方式，用于指定线程模型，比如：dubbo协议的all, direct, message, execution, connection等| 2.1.0以上版本   |
+| \<dubbo:protocol>  | queues    | queues         | int         |    可选    | 0         | 性能调优 | 线程池队列大小，当线程池满时，排队等待执行的队列大小，建议不要设置，当线程池满时应立即失败，重试其它服务提供机器，而不是排队，除非有特殊需求。| 2.0.5以上版本   |
+| \<dubbo:protocol>  | charset   | charset        | string      |    可选    | UTF-8     | 性能调优 | 序列化编码        | 2.0.5以上版本   |
+| \<dubbo:protocol>  | buffer    | buffer         | int         |    可选    | 8192      | 性能调优 | 网络读写缓冲区大小 | 2.0.5以上版本  |
+| \<dubbo:protocol>  | heartbeat | heartbeat      | int         |    可选    | 0         | 性能调优 | 心跳间隔，对于长连接，当物理层断开时，比如拔网线，TCP的FIN消息来不及发送，对方收不到断开事件，此时需要心跳来帮助检查连接是否已断开| 2.0.10以上版本   |
+| \<dubbo:protocol>  | telnet    | telnet         | string      |    可选    |           | 服务治理 | 所支持的telnet命令，多个命令用逗号分隔| 2.0.5以上版本   |
+| \<dubbo:protocol>  | register  | register       | boolean     |    可选    | true      | 服务治理 | 该协议的服务是否注册到注册中心| 2.0.8以上版本   |
+| \<dubbo:protocol>  |contextpath| contextpath    | string      |    可选    | 缺省为空串 | 服务治理 |                 | 2.0.6以上版本   |
 
 &nbsp;&nbsp;
 &nbsp;&nbsp;
