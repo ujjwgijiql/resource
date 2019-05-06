@@ -243,3 +243,18 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:provider> | registry| registry        | string      |    可选    | 缺省向所有registry注册| 配置关联 | 向指定注册中心注册，在多个注册中心时使用，值为<dubbo:registry>的id属性，多个注册中心ID用逗号分隔，如果不想将该服务注册到任何registry，可将值设为N/A | 2.0.5以上版本 |
 | \<dubbo:provider> | dynamic | dynamic         | boolean     |    可选    | true      | 服务治理 | 服务是否动态注册，如果设为false，注册后将显示后disable状态，需人工启用，并且服务提供者停止时，也不会自动取消册，需人工禁用。 | 2.0.5以上版本 |
 | \<dubbo:provider> |accesslog| accesslog       |string/ boolean|    可选    | false     | 服务治理 | 设为true，将向logger中输出访问日志，也可填写访问日志文件路径，直接把访问日志输出到指定文件 | 2.0.5以上版本 |
+| \<dubbo:provider> | owner   | owner           | string      |    可选    |           | 服务治理 | 服务负责人，用于服务治理，请填写负责人公司邮箱前缀 | 2.0.5以上版本 |
+| \<dubbo:provider> | document| document        | string      |    可选    |           | 服务治理 | 服务文档URL     | 2.0.5以上版本 |
+| \<dubbo:provider> | weight  | weight          | int         |    可选    |           | 性能调优 | 服务权重        | 2.0.5以上版本 |
+| \<dubbo:provider> | executes| executes        | int         |    可选    | 0         | 性能调优 | 服务提供者每服务每方法最大可并行执行请求数 | 2.0.5以上版本 |
+| \<dubbo:provider> | actives | default. actives| int         |    可选    | 0         | 性能调优 | 每服务消费者每服务每方法最大并发调用数 | 2.0.5以上版本 |
+| \<dubbo:provider> | proxy   | proxy           | string      |    可选    | javassist | 性能调优 | 生成动态代理方式，可选：jdk/javassist | 2.0.5以上版本 |
+| \<dubbo:provider> | cluster | default.cluster | string      |    可选    | failover  | 性能调优 | 集群方式，可选：failover/ failfast/ failsafe/ failback/ forking | 2.0.5以上版本 |
+| \<dubbo:provider> |deprecated| deprecated     | boolean     |    可选    | false     | 服务治理 | 服务是否过时，如果设为true，消费方引用时将打印服务过时警告error日志 | 2.0.5以上版本 |
+| \<dubbo:provider> |  queues | queues          | int         |    可选    | 0         | 性能调优 | 线程池队列大小，当线程池满时，排队等待执行的队列大小，建议不要设置，当线程程池时应立即失败，重试其它服务提供机器，而不是排队，除非有特殊需求。 | 2.0.5以上版本 |
+| \<dubbo:provider> | charset | charset         | string      |    可选    | UTF-8     | 性能调优 | 序列化编码          | 2.0.5以上版本 |
+| \<dubbo:provider> | buffer  | buffer          | int         |    可选    | 8192      | 性能调优 | 网络读写缓冲区大小   | 2.0.5以上版本 |
+| \<dubbo:provider> |iothreads| iothreads       | int         |    可选    | CPU + 1   | 性能调优 | IO线程池，接收网络读写中断，以及序列化和反序列化，不处理业务，业务线程池参见threads配置，此线程池和CPU相关，不建议配置。 | 2.0.5以上版本 |
+| \<dubbo:provider> | telnet  | telnet          | string      |    可选    |           | 服务治理 | 所支持的telnet命令，多个命令用逗号分隔 | 2.0.5以上版本 |
+| \<dubbo:provider> |contextpath| contextpath   | string      |    可选    | 缺省为空串 | 服务治理 |                     | 2.0.6以上版本 |
+| \<dubbo:provider> | layer   | layer           | string      |    可选    |           | 服务治理 | 服务提供者所在的分层。如：biz、dao、intl:web、china:acton。 | 2.0.7以上版本 |
