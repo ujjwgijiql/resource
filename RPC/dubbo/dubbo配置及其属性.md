@@ -121,7 +121,7 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:protocol>  | accepts   | accepts        | int         |    可选    | 0         | 性能调优 | 服务提供方最大可接受连接数| 2.0.5以上版本   |
 | \<dubbo:protocol>  | payload   | payload        | int         |    可选    | 88388608(=8M)| 性能调优 | 请求及响应数据包大小限制，单位：字节| 2.0.5以上版本   |
 | \<dubbo:protocol>  | codec     | codec          | string      |    可选    | dubbo     | 性能调优 | 协议编码方式 | 2.0.5以上版本   |
-| \<dubbo:protocol>  | serialization| serialization| string      |    可选    | dubbo协议缺省为hessian2，rmi协议缺省为java，http协议缺省为json| 性能调优 | 协议序列化方式，当协议支持多种序列化方式时使用，比如：dubbo协议的dubbo,hessian2,java,compactedjava，以及http协议的json等| 2.0.5以上版本   |
+| \<dubbo:protocol>  | serialization| serialization| string      |    可选    | dubbo协议缺省为hessian2，rmi协议缺省为java，http协议缺省为json| 性能调优 | 协议序列化方式，当协议支持多种序列化方式时使用，比如：dubbo协议的dubbo, hessian2, java, compactedjava，以及http协议的json等| 2.0.5以上版本   |
 | \<dubbo:protocol>  | accesslog | accesslog      | string/ boolean|    可选    |        | 服务治理 | 设为true，将向logger中输出访问日志，也可填写访问日志文件路径，直接把访问日志输出到指定文件| 2.0.5以上版本   |
 | \<dubbo:protocol>  | path     | \<path>         | string      |    可选    |           | 服务发现 | 提供者上下文路径，为服务path的前缀| 2.0.5以上版本   |
 | \<dubbo:protocol>  | transporter | transporter  | string      |    可选    | dubbo协议缺省为netty| 性能调优 | 协议的服务端和客户端实现类型，比如：dubbo协议的mina,netty等，可以分拆为server和client配置| 2.0.5以上版本   |
