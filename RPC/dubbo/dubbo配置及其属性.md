@@ -170,7 +170,7 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 
 |         标签        |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
 |:------------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
-| \<dubbo:monitor>   | protocol  | protocol       | string      |    可选    | dubbo     | 服务治理 | 监控中心协议，如果为protocol="registry"，表示从注册中心发现监控中心地址，否则直连监控中心。| 2.0.9以上版本   |
+| \<dubbo:monitor>   | protocol  | protocol       | string      |    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | dubbo     | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>服务治理<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 监控中心协议，如果为protocol="registry"，表示从注册中心发现监控中心地址，否则直连监控中心。| 2.0.9以上版本   |
 | \<dubbo:monitor>   | address   | \<url>         | string      |    必填    | N/A       | 服务治理 | 直连监控中心服务器地址，address="10.20.130.230:12080"| 1.0.16以上版本   |
 
 &nbsp;&nbsp;
@@ -197,9 +197,23 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 配置类：com.alibaba.dubbo.config.ModuleConfig
 
 |      标签       |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |     兼容性   |
-|:------------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
+|:------- -------:|:---------:|:--------------:|:-----------:|:---------:|---------- |:-------:|:-----------------|:------------:|
 | \<dubbo:module> | name      | module         | string     |    必填    |           | 服务治理 | 当前模块名称，用于注册中心计算模块间依赖关系| 2.2.0以上版本   |
 | \<dubbo:module> | version   | module. version| string     |    可选    |           | 服务治理 | 当前模块的版本  | 2.2.0以上版本   |
 | \<dubbo:module> | owner     | owner          | string     |    可选    |           | 服务治理 | 模块负责人，用于服务治理，请填写负责人公司邮箱前缀| 2.2.0以上版本   |
 | \<dubbo:module> |organization| organization  | string     |    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    |           | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>服务治理<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 组织名称(BU或部门)，用于注册中心区分服务来源，此配置项建议不要使用autoconfig，直接写死在配置中，比如china, intl, itu, crm, asc, dw, aliexpress等| 2.2.0以上版本   |
 
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+## \<dubbo:provider/\>
+服务提供者缺省值配置：  
+配置类：com.alibaba.dubbo.config.ProviderConfig  
+说明：该标签为<dubbo:service>和<dubbo:protocol>标签的缺省值设置。
+
+|        标签       |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
+|:-----------------:|:--------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
+| \<dubbo:provider> | id       |                | string      |    可选    | dubbo     | 配置关联 | 协议BeanId，可以在<dubbo:service proivder="">中引用此ID| 1.0.16以上版本   |
+| \<dubbo:provider> | protocol | \<protocol>    | string      |    可选    | dubbo     | 性能调优 | 协议名称          | 1.0.16以上版本 |
+| \<dubbo:provider> | host     | \<host>        | string      |    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | 自动查找本机IP| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>服务发现<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 服务主机名，多网卡选择或指定VIP及域名时使用，为空则自动查找本机IP，建议不要配置，让Dubbo自动获取本机IP | 1.0.16以上版本 |
+| \<dubbo:provider> | threads | threads         | int         |    可选    | 100       | 性能调优 | 服务线程池大小(固定大小) | 1.0.16以上版本 |
+| \<dubbo:provider> | payload | payload         | int         |    可选    | 88388608(=8M) | 性能调优 | 请求及响应数据包大小限制，单位：字节 | 2.0.0以上版本 |
