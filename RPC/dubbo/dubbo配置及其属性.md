@@ -161,3 +161,25 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:registry>  | register	  | register      | boolean     |    可选    |  true     | 服务治理 |是否向此注册中心注册服务，如果设为false，将只订阅，不注册| 2.0.5以上版本   |
 | \<dubbo:registry>  | subscribe  | subscribe     | boolean     |    可选    |  true     | 服务治理 |是否向此注册中心订阅服务，如果设为false，将只注册，不订阅| 2.0.5以上版本   |
 | \<dubbo:registry>  | dynamic    | dynamic       | boolean     |    可选    |  true     | 服务治理 |服务是否动态注册，如果设为false，注册后将显示后disable状态，需人工启用，并且服务提供者停止时，也不会自动取消册，需人工禁用。| 2.0.5以上版本   |
+
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+## \<dubbo:monitor/\>
+监控中心配置：  
+配置类：com.alibaba.dubbo.config.MonitorConfig
+
+|         标签        |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
+|:------------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
+| \<dubbo:monitor>   | protocol  | protocol       | string      |    可选    | dubbo     | 服务治理 | 监控中心协议，如果为protocol="registry"，表示从注册中心发现监控中心地址，否则直连监控中心。| 2.0.9以上版本   |
+| \<dubbo:monitor>   | address   | \<url>         | string      |    必填    | N/A       | 服务治理 | 直连监控中心服务器地址，address="10.20.130.230:12080"| 1.0.16以上版本   |
+
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+## \<dubbo:application/\>
+应用信息配置：  
+配置类：com.alibaba.dubbo.config.ApplicationConfig
+
+|         标签          |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |     兼容性   |
+|:------------------:|:---------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
+| \<dubbo:application> | name      | application    | string      |    必填    |           | 服务治理 | 当前应用名称，用于注册中心计算应用间依赖关系，注意：消费者和提供者应用名不要一样，此参数不是匹配条件，你当前项目叫什么名字就填什么，和提供者消费者角色无关，比如：kylin应用调用了morgan应用的服务，则kylin项目配成kylin，morgan项目配成morgan，可能kylin也提供其它服务给别人使用，但kylin项目永远配成kylin，这样注册中心将显示kylin依赖于morgan| 1.0.16以上版本   |
+| \<dubbo:application> | version   | application. version| string      |    可选    |           | 服务治理 | 当前应用的版本| 2.2.0以上版本   |
