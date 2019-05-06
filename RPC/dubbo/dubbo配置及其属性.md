@@ -192,12 +192,13 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 
 &nbsp;&nbsp;
 &nbsp;&nbsp;
+
 ## \<dubbo:module/\>
 模块信息配置：  
 配置类：com.alibaba.dubbo.config.ModuleConfig
 
-|      标签       |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |     兼容性   |
-|:------- -------:|:---------:|:--------------:|:-----------:|:---------:|---------- |:-------:|:-----------------|:------------:|
+|       标签      |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
+|:---------------:|:--------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
 | \<dubbo:module> | name      | module         | string     |    必填    |           | 服务治理 | 当前模块名称，用于注册中心计算模块间依赖关系| 2.2.0以上版本   |
 | \<dubbo:module> | version   | module. version| string     |    可选    |           | 服务治理 | 当前模块的版本  | 2.2.0以上版本   |
 | \<dubbo:module> | owner     | owner          | string     |    可选    |           | 服务治理 | 模块负责人，用于服务治理，请填写负责人公司邮箱前缀| 2.2.0以上版本   |
@@ -205,6 +206,7 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 
 &nbsp;&nbsp;
 &nbsp;&nbsp;
+
 ## \<dubbo:provider/\>
 服务提供者缺省值配置：  
 配置类：com.alibaba.dubbo.config.ProviderConfig  
