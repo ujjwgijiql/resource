@@ -258,3 +258,19 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:provider> | telnet  | telnet          | string      |    可选    |           | 服务治理 | 所支持的telnet命令，多个命令用逗号分隔 | 2.0.5以上版本 |
 | \<dubbo:provider> |contextpath| contextpath   | string      |    可选    | 缺省为空串 | 服务治理 |                     | 2.0.6以上版本 |
 | \<dubbo:provider> | layer   | layer           | string      |    可选    |           | 服务治理 | 服务提供者所在的分层。如：biz、dao、intl:web、china:acton。 | 2.0.7以上版本 |
+
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+## \<dubbo:consumer/\>
+服务消费者缺省值配置：  
+配置类：com.alibaba.dubbo.config.ConsumerConfig  
+说明：该标签为<dubbo:reference>标签的缺省值设置。
+
+|        标签       |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
+|:-----------------:|:--------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
+| \<dubbo:consumer> | timeout  |default. timeout| int         |    可选    | 1000      | 性能调优 | 远程服务调用超时时间(毫秒)| 1.0.16以上版本   |
+| \<dubbo:consumer> | retries  |default. retries| int         |    可选    | 2         | 性能调优 | 远程服务调用重试次数，不包括第一次调用，不需要重试请设为0| 1.0.16以上版本 |
+| \<dubbo:consumer> |loadbalance|default. loadbalance| string      |    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | random    | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>性能调优<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 负载均衡策略，可选值：random, roundrobin, leastactive，分别表示：随机，轮循，最少活跃调用| 1.0.16以上版本 |
+| \<dubbo:consumer> | async    | default. async | boolean     |    可选    | false     | 性能调优 | 是否缺省异步执行，不可靠异步，只是忽略返回值，不阻塞执行线程| 2.0.0以上版本 |
+| \<dubbo:consumer> |connections|default. connections| int        |    可选    | 100       | 性能调优 | 每个服务对每个提供者的最大连接数，rmi、http、hessian等短连接协议支持此配置，dubbo协议长连接不支持此配置| 1.0.16以上版本 |
