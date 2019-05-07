@@ -301,5 +301,16 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:method> | name     |                 | string     |    必填   |            | 标识     | 方法名           | 1.0.8以上版本   |
 | \<dubbo:method> | timeout  |\<metodName>. timeout| int         |    可选    | 缺省为的timeout| 性能调优 | 方法调用超时时间(毫秒)| 1.0.8以上版本 |
 | \<dubbo:method> | retries  |\<metodName>. retries| int         |    可选    | 缺省为<dubbo:reference>的retries| 性能调优 | 远程服务调用重试次数，不包括第一次调用，不需要重试请设为0| 2.0.0以上版本 |
-| \<dubbo:method> |loadbalance|\<metodName>. loadbalance| string      |    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | 缺省为的loadbalance| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>性能调优<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 负载均衡策略，可选值：random,roundrobin,leastactive，分别表示：随机，轮循，最少活跃调用| 2.0.0以上版本 |
+| \<dubbo:method> |loadbalance|\<metodName>. loadbalance| string      |    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | 缺省为的loadbalance| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>性能调优<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 负载均衡策略，可选值：random, roundrobin, leastactive，分别表示：随机，轮循，最少活跃调用| 2.0.0以上版本 |
 | \<dubbo:method> | async    |\<metodName>. async| boolean     |    可选    | 缺省为<dubbo:reference>的async| 性能调优 | 是否异步执行，不可靠异步，只是忽略返回值，不阻塞执行线程| 1.0.9以上版本 |
+| \<dubbo:method> | sent     |\<metodName>. sent| boolean     |    可选    | true    | 性能调优 | 异步调用时，标记sent=true时，表示网络已发出数据| 2.0.6以上版本 |
+| \<dubbo:method> | actives  |\<metodName>. actives| int         |    可选    | 0       | 性能调优 | 每服务消费者最大并发调用限制| 2.0.5以上版本 |
+| \<dubbo:method> | executes |\<metodName>. executes| int         |    可选    | 0       | 性能调优 | 每服务每方法最大使用线程数限制- -，此属性只在<dubbo:method>作为<dubbo:service>子标签时有效| 2.0.5以上版本 |
+| \<dubbo:method> |deprecated|\<metodName>. deprecated| boolean     |    可选    | false   | 服务治理 | 服务方法是否过时，此属性只在<dubbo:method>作为<dubbo:service>子标签时有效| 2.0.5以上版本 |
+| \<dubbo:method> | sticky   |\<metodName>. sticky| boolean     |    可选    | false   | 服务治理 | 设置true 该接口上的所有方法使用同一个provider.如果需要更复杂的规则，请使用用路由| 2.0.6以上版本 |
+| \<dubbo:method> | return   |\<metodName>. return| boolean     |    可选    | true    | 性能调优 | 方法调用是否需要返回值,async设置为true时才生效，如果设置为true，则返回future，或回调onreturn等方法，如果设置为false，则请求发送成功后直接返回Null| 2.0.6以上版本 |
+| \<dubbo:method> | oninvoke | attribute属性，不在URL中体现| String      |    可选    |         | 性能调优 | 方法执行前拦截| 2.0.6以上版本 |
+| \<dubbo:method> | onreturn | attribute属性，不在URL中体现| String      |    可选    |         | 性能调优 | 方法执行返回后拦截| 2.0.6以上版本 |
+| \<dubbo:method> | onthrow  | attribute属性，不在URL中体现| String      |    可选    |         | 性能调优 | 方法执行有异常拦截| 2.0.6以上版本 |
+| \<dubbo:method> | cache    |\<metodName>. cache | string/ boolean|    可选    |         | 服务治理 | 以调用参数为key，缓存返回结果，可选：lru, threadlocal, jcache等| 2.1.0以上版本 |
+| \<dubbo:method> |validation|\<metodName>. validation | boolean   |    可选    |         | 服务治理 |是否启用JSR303标准注解验证，如果启用，将对方法参数上的注解进行校验| 2.1.0以上版本 |
