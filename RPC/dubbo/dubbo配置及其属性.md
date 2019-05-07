@@ -287,3 +287,16 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 | \<dubbo:consumer> | init     |init            | boolean    |    可选    | false     | 性能调优 | 是否在afterPropertiesSet()时饥饿初始化引用，否则等到有人注入或引用该实例时再初始化。 | 2.0.10以上版本 |
 | \<dubbo:consumer> | cache    |cache           | string/ boolean|    可选    |           | 服务治理 | 以调用参数为key，缓存返回结果，可选：lru, threadlocal, jcache等 | 2.1.0以上版本 |
 | \<dubbo:consumer> |validation| validation     | boolean    |    可选    |           | 服务治理 | 是否启用JSR303标准注解验证，如果启用，将对方法参数上的注解进行校验 | 2.1.0以上版本 |
+
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+## \<dubbo:method/\>
+服务消费者缺省值配置：  
+配置类：com.alibaba.dubbo.config.ConsumerConfig  
+说明：该标签为<dubbo:reference>标签的缺省值设置。
+
+|        标签       |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
+|:-----------------:|:--------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
+| \<dubbo:method> | timeout  |default. timeout| int         |    可选    | 1000      | 性能调优 | 远程服务调用超时时间(毫秒)| 1.0.16以上版本   |
+| \<dubbo:method> | retries  |default. retries| int         |    可选    | 2         | 性能调优 | 远程服务调用重试次数，不包括第一次调用，不需要重试请设为0| 1.0.16以上版本 |
