@@ -292,11 +292,14 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 &nbsp;&nbsp;
 
 ## \<dubbo:method/\>
-服务消费者缺省值配置：  
-配置类：com.alibaba.dubbo.config.ConsumerConfig  
-说明：该标签为<dubbo:reference>标签的缺省值设置。
+方法级配置：  
+配置类：com.alibaba.dubbo.config.MethodConfig  
+说明：该标签为<dubbo:service>或<dubbo:reference>的子标签，用于控制到方法级。
 
-|        标签       |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
-|:-----------------:|:--------:|:--------------:|:-----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
-| \<dubbo:method> | timeout  |default. timeout| int         |    可选    | 1000      | 性能调优 | 远程服务调用超时时间(毫秒)| 1.0.16以上版本   |
-| \<dubbo:method> | retries  |default. retries| int         |    可选    | 2         | 性能调优 | 远程服务调用重试次数，不包括第一次调用，不需要重试请设为0| 1.0.16以上版本 |
+|        标签     |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述         |      兼容性    |
+|:---------------:|:--------:|:---------------:|:----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
+| \<dubbo:method> | name     |                 | string     |    必填   |            | 标识     | 方法名           | 1.0.8以上版本   |
+| \<dubbo:method> | timeout  |\<metodName>. timeout| int         |    可选    | 缺省为的timeout| 性能调优 | 方法调用超时时间(毫秒)| 1.0.8以上版本 |
+| \<dubbo:method> | retries  |\<metodName>. retries| int         |    可选    | 缺省为<dubbo:reference>的retries| 性能调优 | 远程服务调用重试次数，不包括第一次调用，不需要重试请设为0| 2.0.0以上版本 |
+| \<dubbo:method> |loadbalance|\<metodName>. loadbalance| string      |    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    | 缺省为的loadbalance| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>性能调优<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 负载均衡策略，可选值：random,roundrobin,leastactive，分别表示：随机，轮循，最少活跃调用| 2.0.0以上版本 |
+| \<dubbo:method> | async    |\<metodName>. async| boolean     |    可选    | 缺省为<dubbo:reference>的async| 性能调优 | 是否异步执行，不可靠异步，只是忽略返回值，不阻塞执行线程| 1.0.9以上版本 |
