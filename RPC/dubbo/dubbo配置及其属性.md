@@ -339,5 +339,18 @@ __注意：只有group，interface，version是服务的匹配条件，三者决
 |:-----------------:|:--------:|:---------------:|:----------:|:---------:|----------- |:-------:|:-----------------|:--------------:|
 | \<dubbo:argument> | index    |                 | int        |    必填   |            | 标识     | 方法名           | 2.0.6以上版本   |
 | \<dubbo:argument> | type     |                 | string     |与index二选一|          | 标识     | 通过参数类型查找参数的index| 2.0.6以上版本 |
-| \<dubbo:argument> | callback |<metodName><index>. retries| boolean    |   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   |          | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>服务治理<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 参数是否为callback接口，如果为callback，服务提供方将生成反向代理，可以从服务提供方反向调用消费方，通常用于事件推送.| 2.0.6以上版本 |
+| \<dubbo:argument> | callback |\<metodName>\<index>. retries| boolean    |   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>可选<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   |          | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br>服务治理<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 参数是否为callback接口，如果为callback，服务提供方将生成反向代理，可以从服务提供方反向调用消费方，通常用于事件推送.| 2.0.6以上版本 |
 
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+## \<dubbo:parameter/\>
+选项参数配置：  
+配置类：java.util.Map  
+说明：该标签为<dubbo:protocol>或<dubbo:service>或<dubbo:provider>或<dubbo:reference>  
+或<dubbo:consumer>的子标签，用于配置自定义参数，该配置项将作为扩展点设置自定义参数使用。
+
+|         标签       |   属性    | 对应URL<br>参数 |     类型    |是否<br>必填|   缺省值   |   作用  |      描述       |      兼容性    |
+|:------------------:|:--------:|:---------------:|:----------:|:---------:|----------- |:-------:|:---------------|:--------------:|
+| \<dubbo:parameter> | key      | key             | string     |    必填   |            | 服务治理 | 路由参数键      | 2.0.0以上版本   |
+| \<dubbo:parameter> | value    | value           | string     |    必填   |            | 服务治理 | 路由参数值      | 2.0.0以上版本   |
