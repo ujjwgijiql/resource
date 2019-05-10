@@ -51,13 +51,24 @@ requirepass 123   指定密码123
 # /usr/share/redis-5.0.4/bin/redis-server /usr/share/redis-5.0.4/etc/redis.conf 
 ```
 &nbsp;&nbsp;  
+
+### 8、 /usr/local/redis/bin目录下的几个文件是什么
+* redis-benchmark：redis性能测试工具  
+* redis-check-aof：检查aof日志的工具  
+* redis-check-dump：检查rdb日志的工具  
+* redis-cli：连接用的客户端  
+* redis-server：redis服务进程  
+&nbsp;&nbsp;  
 &nbsp;&nbsp;  
 
-# 常用命令
-* redis-server /usr/share/redis-5.0.4/etc/redis.conf //启动redis  
-* pkill redis  //停止redis  
 
+
+# 常用命令
+* redis-server /usr/share/redis-5.0.4/etc/redis.conf // 启动redis  
+* pkill redis  // 停止redis  
+* /usr/share/redis-5.0.4/bin/redis-cli shutdown   // 停止redis   
+* /usr/share/redis-5.0.4/bin/redis-cli   // 客户端连接
 ### 卸载redis：
-* rm -rf /usr/share/redis-5.0.4 //删除安装目录  
-* rm -rf /usr/bin/redis-* //删除所有redis相关命令脚本  
-* rm -rf /root/download/redis-5.0.4 //删除redis解压文件夹
+* rm -rf /usr/share/redis-5.0.4 // 删除安装目录  
+* rm -rf /usr/bin/redis-* // 删除所有redis相关命令脚本  
+* rm -rf /root/download/redis-5.0.4 // 删除redis解压文件夹
