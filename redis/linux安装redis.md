@@ -54,10 +54,10 @@ requirepass 123   指定密码123
 &nbsp;&nbsp;  
 
 # 常用命令
-* redis-server /usr/local/redis/etc/redis.conf //启动redis  
+* redis-server /usr/share/redis-5.0.4/etc/redis.conf //启动redis  
 * pkill redis  //停止redis  
 
 ### 卸载redis：
-* rm -rf /usr/local/redis //删除安装目录  
+* rm -rf /usr/share/redis-5.0.4 //删除安装目录  
 * rm -rf /usr/bin/redis-* //删除所有redis相关命令脚本  
-* rm -rf /root/download/redis-4.0.4 //删除redis解压文件夹
+* rm -rf /root/download/redis-5.0.4 //删除redis解压文件夹
