@@ -1,6 +1,6 @@
-# sed的流艺术之一
+# sed的流艺术
 
-__1、 你想过sed为什么叫sed么？__
+__1、 你想过sed为什么叫sed么？__  
 sed是stream editor的缩写，sed就是一个流编辑器，  
 说白了，就是我们往sed里输入一串信息，它给我们处理，然后输出来。就这么简单。  
 &nbsp;&nbsp;
@@ -13,13 +13,13 @@ sed的命令格式是：sed command file
 file是要处理的文件，如果忽略file参数，则sed会把标准输入作为处理对象。  
 &nbsp;&nbsp;
 
-__2、 sed的工作原理是什么?__
+__2、 sed的工作原理是什么?__  
 sed会一次处理一行内容。处理时，把当前处理的行存储在临时缓冲区中，称为“模式空间”（pattern space），  
 接着用sed命令处理缓冲区中的内容，处理完成后，把缓冲区的内容送往屏幕。  
 接着处理下一行，这样不断重复，直到文件末尾。文件内容并没有改变，除非你使用重定向存储输出。  
 &nbsp;&nbsp;
 
-__3、 给个最最简单的sed命令的例子吧！让我先有个感性认识，呵呵。__
+__3、 给个最最简单的sed命令的例子吧！让我先有个感性认识，呵呵。__  
 ```shell
 # cat roc.txt
 test 1
@@ -40,7 +40,7 @@ BBtest
 （你一定没忘记，sed所谓的删除都是在模式空间中执行的，而原文件roc.txt毫发无损）  
 &nbsp;&nbsp;
 
-__4、 想实现类似于cut -d : -f 1 /etc/passwd的效果，用sed怎么做呢？__
+__4、 想实现类似于cut -d : -f 1 /etc/passwd的效果，用sed怎么做呢？__  
 ```shell
 # head -n 5 /etc/passwd
 root:x:0:0:root:/root:/bin/bash
