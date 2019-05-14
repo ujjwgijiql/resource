@@ -45,3 +45,38 @@ mariadb-libs-5.5.56-2.el7.x86_64
 ```shell
 # rpm -qa|grep -i mysql
 ```
+&nbsp;&nbsp;
+
+### 2、 安装包处理
+__解压到当前目录:__  
+```shell
+# tar -xzvf mysql-advanced-5.7.26-linux-glibc2.12-x86_64.tar.gz
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/myisam_ftdump
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/myisamchk
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/myisamlog
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/myisampack
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysql
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysql_client_test_embedded
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysql_config_editor
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysql_embedded
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysql_install_db
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysql_plugin
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysql_secure_installation
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysql_ssl_rsa_setup
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysql_tzinfo_to_sql
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysql_upgrade
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysqladmin
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysqlbinlog
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysqlcheck
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysqldump
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysqlimport
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysqlpump
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysqlshow
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysqlslap
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysqltest_embedded
+mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysqlxtest
+...
+```
+__mysql主目录处理__  
+移动文件到/usr/local/mysql:
+
