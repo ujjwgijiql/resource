@@ -194,7 +194,7 @@ default-character-set=utf8mb4
 ```
 初始化数据库:
 ```sehll
-# ./mysqld --initialize --user=mysql --basedir=/usr/local/mysql--datadir=/opt/mysql/data
+# ./mysqld --initialize --user=mysql --basedir=/usr/local/mysql --datadir=/opt/mysql/data
 ```
 注：这时会出现错误
 ```shell
@@ -207,7 +207,7 @@ default-character-set=utf8mb4
  ```
 再执行
 ```shell
-# ./mysqld --initialize --user=mysql --basedir=/usr/local/mysql--datadir=/opt/mysql/data
+# ./mysqld --initialize --user=mysql --basedir=/usr/local/mysql --datadir=/opt/mysql/data
  ```
  
  安全启动:
