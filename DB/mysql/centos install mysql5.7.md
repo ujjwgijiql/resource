@@ -155,7 +155,7 @@ default-character-set=utf8mb4
 ```shell
 # cd /opt/mysql
 # touch mysql.sock
-# chown mysql:mysql mysql.sock
+# chown -R mysql:mysql /opt/mysql
 # chmod 755 mysql.sock
 ```
 
@@ -210,7 +210,7 @@ default-character-set=utf8mb4
 # ./mysqld --initialize --user=mysql --basedir=/usr/local/mysql --datadir=/opt/mysql/data
  ```
  
- 安全启动:
+  安全启动:
  ```shell
  # ./mysqld_safe --user=mysql &
  ```
@@ -220,9 +220,30 @@ default-character-set=utf8mb4
  # ps -ef | grep mys
  ```
  
+ 起动失败，日志报错误：
+ ```shell
+ mysqld: Table 'mysql.plugin' doesn't exist
+2019-05-16T06:17:08.520931Z 0 [ERROR] Can't open the mysql.plugin table. Please run mysql_upgrade to create it.
+2019-05-16T06:17:08.524167Z 0 [Note] Salting uuid generator variables, current_pid: 8146, server_start_time: 1557987427, bytes_sent: 0, 
+2019-05-16T06:17:08.524237Z 0 [Note] Generated uuid: '3bec07e0-77a2-11e9-a3f8-169ff5c8ace3', server_start_time: 2292895161842999349, bytes_sent: 60218864
+ ```
+ 删除/opt/mysql/data目录下所有文件，再执行一次：
+ ```shell
+ # ./mysqld --initialize --user=mysql --basedir=/usr/local/mysql --datadir=/opt/mysql/data
+ ```
+ 
  默认密码在mysqld.log日志里, 找到后保存到安全的地方:
  ```shell
  # cat /var/log/mysqld.log
+ .
+ .
+ .
+ 2019-05-16T06:36:31.793211Z 0 [Warning] CA certificate ca.pem is self signed.
+2019-05-16T06:36:31.947998Z 1 [Note] A temporary password is generated for root@localhost: (fWlgp6!=Eda
+2019-05-16T06:41:54.044671Z 0 [Warning] TIMESTAMP with implicit DEFAULT value is deprecated. Please use --explicit_defaults_for_timestamp server option (see documentation for more details).
+2019-05-16T06:41:54.044822Z 0 [Note] --secure-file-priv is set to NULL. Operations related to importing and exporting data are disabled
+2019-05-16T06:41:54.044854Z 0 [Note] /usr/local/mysql/bin/mysqld (mysqld 5.7.26-enterprise-commercial-advanced-log) starting as process 9920 ...
+...
  ```
  
  其中root@localhost: 后面的就是默认密码,后面登录用.(如果找不到可能默认是空,登录时密码直接回车,否则可能安装有问题)  
