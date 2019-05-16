@@ -77,6 +77,174 @@ mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysqltest_embedded
 mysql-advanced-5.7.26-linux-glibc2.12-x86_64/bin/mysqlxtest
 ...
 ```
+
 __mysql主目录处理__  
 移动文件到/usr/local/mysql:
+```shell
+# mv mysql-5.7.23-linux-glibc2.12-x86_64 /usr/local/mysql
+# cd/usr/local/mysql
+# mkdir data
+```
 
+__主目录权限处理__  
+查看组和用户情况
+```shell
+# cat /etc/group | grep mysql
+# cat /etc/passwd |grep mysql
+```
+若存在，则删除原mysql用户：
+```shell
+# userdel -r mysql
+```
+会删除其对应的组和用户。  
+再查看就会发现没有，说明你已经删掉了  
+创建mysql组和mysql用户  
+```shell
+# groupadd mysql
+# useradd -r -g mysql mysql
+# chown -R mysql:mysql /usr/local/mysql
+```
+&nbsp;&nbsp;
+
+### 创建配置文件及相关目录
+修改配置文件：/etc/my.cnf，配置不对的话,后面初始化不全,会拿不到默认密码。
+```shell
+# vim /etc/my.cnf
+```
+修改内容:
+```shell
+[mysqld]
+basedir=/usr/local/mysql
+datadir=/usr/local/mysql/data
+port = 3306
+socket=/tmp/mysql.sock
+
+symbolic-links=0
+log-error=/var/log/mysqld.log
+pid-file=/tmp/mysqld/mysqld.pid
+sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+[client]
+default-character-set=utf8
+
+[mysql]
+default-character-set=utf8
+
+[mysqld]
+log-bin=mysql-bin 
+binlog-format=ROW 
+server_id=1 
+max_connections=1000
+
+init_connect='SET collation_connection = utf8_unicode_ci'
+init_connect='SET NAMES utf8'
+character-set-server=utf8
+collation-server=utf8_unicode_ci
+skip-character-set-client-handshake
+```
+:wq! 保存退出。  
+&nbsp;&nbsp;
+
+创建文件/tmp/mysql.sock：设置用户组及用户，授权  
+```shell
+# cd /tmp
+# touch mysql.sock
+# chown mysql:mysql mysql.sock
+# chmod 755 mysql.sock
+```
+
+创建文件/tmp/mysqld/mysqld.pid：
+```shell
+# mkdir mysqld
+# cd mysqld
+# touch mysqld.pid
+# cd ..
+# chown -R mysql:mysql mysqld
+# cd mysqld
+# chmod 755 mysqld.pid
+```
+
+创建文件/var/log/mysqld.log：
+```shell
+# touch /var/log/mysqld.log
+# chown -R mysql:mysql /var/log
+# cd log
+# chmod 755 mysqld.log
+```
+&nbsp;&nbsp;
+
+### 安装和初始化数据库
+进入bin目录:
+```shell
+# cd /usr/local/mysql/bin/
+```
+初始化数据库:
+```sehll
+# ./mysqld --initialize --user=mysql --basedir=/usr/local/mysql--datadir=/usr/local/mysql/data
+```
+注：这时会出现错误
+```shell
+./mysqld: error while loading shared libraries: libaio.so.1: cannot open shared object file: No such file or directory
+```
+
+解决方案：
+```shell
+# yum install -y libaio
+ ```
+再执行
+```shell
+# ./mysqld --initialize --user=mysql --basedir=/usr/local/mysql--datadir=/usr/local/mysql/data
+ ```
+ 
+ 安全启动:
+ ```shell
+ # ./mysqld_safe --user=mysql &
+ ```
+ 
+ 是否启动成功，可以通过查看mysql进程
+ ```shell
+ # ps -ef | grep mys
+ ```
+ 
+ 默认密码在mysqld.log日志里, 找到后保存到安全的地方:
+ ```shell
+ # cat /var/log/mysqld.log
+ ```
+ 
+ 其中root@localhost: 后面的就是默认密码,后面登录用.(如果找不到可能默认是空,登录时密码直接回车,否则可能安装有问题)  
+进入bin目录:
+```shell
+# cd /usr/local/mysql/bin/
+```
+
+登录mysql:
+```shell
+# ./mysql -u root -p
+```
+拷贝或者输入mysqld.log中获得的默认密码，即可进入mysql命令客户端。  
+
+但是，若输入相关命令，则会提示你修改用户密码（注意后面一定要加；）。  
+```shell
+mysql> show databases;
+```
+假设密码修改为xh2018
+```shell
+mysql> set password=password("xh2018");
+```
+
+* 设置远程登录权限
+```shell
+mysql> grant all privileges on *.* to 'root'@'%' identified by 'xh2018'; 
+```
+
+立即生效:
+```shell
+mysql> flush privileges;
+```
+
+退出quit 或者 exit;
+```shell
+mysql> quit;
+```
+&nbsp;&nbsp;
+
+### 开机服务启动设置：
