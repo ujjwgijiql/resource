@@ -113,21 +113,20 @@ __主目录权限处理__
 ```
 修改内容:
 ```shell
-[mysqld]
-basedir=/usr/local/mysql
-datadir=/usr/local/mysql/data
+sedir=/usr/local/mysql
+datadir=/opt/mysql/data
 port = 3306
-socket=/tmp/mysql.sock
+socket=/opt/mysql/mysql.sock
 
 symbolic-links=0
-log-error=/var/log/mysqld.log
-pid-file=/tmp/mysqld/mysqld.pid
+log-error=/opt/logs/mysql/mysqld.log
+pid-file=/opt/mysqld/mysqld.pid
 sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
 [client]
-default-character-set=utf8
+default-character-set=utf8mb4
 
 [mysql]
-default-character-set=utf8
+default-character-set=utf8mb4
 
 [mysqld]
 log-bin=mysql-bin 
@@ -135,24 +134,24 @@ binlog-format=ROW
 server_id=1 
 max_connections=1000
 
-init_connect='SET collation_connection = utf8_unicode_ci'
-init_connect='SET NAMES utf8'
+init_connect='SET collation_connection = utf8mb4_unicode_ci'
+init_connect='SET NAMES utf8mb4'
 character-set-server=utf8
-collation-server=utf8_unicode_ci
+collation-server=utf8mb4_unicode_ci
 skip-character-set-client-handshake
 ```
 :wq! 保存退出。  
 &nbsp;&nbsp;
 
-创建文件/tmp/mysql.sock：设置用户组及用户，授权  
+创建文件/opt/mysql/mysql.sock：设置用户组及用户，授权  
 ```shell
-# cd /tmp
+# cd /opt/mysql
 # touch mysql.sock
 # chown mysql:mysql mysql.sock
 # chmod 755 mysql.sock
 ```
 
-创建文件/tmp/mysqld/mysqld.pid：
+创建文件/opt/mysqld/mysqld.pid：
 ```shell
 # mkdir mysqld
 # cd mysqld
@@ -163,10 +162,10 @@ skip-character-set-client-handshake
 # chmod 755 mysqld.pid
 ```
 
-创建文件/var/log/mysqld.log：
+创建文件/opt/logs/mysql/mysqld.log：
 ```shell
-# touch /var/log/mysqld.log
-# chown -R mysql:mysql /var/log
+# touch /opt/logs/mysql/mysqld.log
+# chown -R mysql:mysql /opt/logs/mysql
 # cd log
 # chmod 755 mysqld.log
 ```
@@ -179,7 +178,7 @@ skip-character-set-client-handshake
 ```
 初始化数据库:
 ```sehll
-# ./mysqld --initialize --user=mysql --basedir=/usr/local/mysql--datadir=/usr/local/mysql/data
+# ./mysqld --initialize --user=mysql --basedir=/usr/local/mysql--datadir=/opt/mysql/data
 ```
 注：这时会出现错误
 ```shell
@@ -192,7 +191,7 @@ skip-character-set-client-handshake
  ```
 再执行
 ```shell
-# ./mysqld --initialize --user=mysql --basedir=/usr/local/mysql--datadir=/usr/local/mysql/data
+# ./mysqld --initialize --user=mysql --basedir=/usr/local/mysql--datadir=/opt/mysql/data
  ```
  
  安全启动:
