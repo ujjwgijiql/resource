@@ -143,9 +143,11 @@ default-time-zone = '+08:00'
 
 [client]
 default-character-set=utf8mb4
+socket=/opt/mysql/mysql.sock
 
 [mysql]
 default-character-set=utf8mb4
+socket=/opt/mysql/mysql.sock
 
 ```
 :wq! 保存退出。  
