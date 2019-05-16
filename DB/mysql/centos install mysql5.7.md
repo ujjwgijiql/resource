@@ -123,23 +123,30 @@ symbolic-links=0
 log-error=/opt/logs/mysql/mysqld.log
 pid-file=/opt/mysql/mysqld/mysqld.pid
 sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
+
+####binlog
+server-id=1
+log-bin=/opt/mysql/logs/mysql-bin
+expire_logs_days=7
+binlog_format=ROW
+max_binlog_size = 100M
+log-slave-updates=1
+lower_case_table_names=1
+max_connections=1000
+
+init_connect='SET collation_connection = utf8mb4_unicode_ci'
+init_connect='SET NAMES utf8mb4'
+character-set-server=utf8mb4
+collation-server=utf8mb4_unicode_ci
+skip-character-set-client-handshake
+default-time-zone = '+08:00'
+
 [client]
 default-character-set=utf8mb4
 
 [mysql]
 default-character-set=utf8mb4
 
-[mysqld]
-log-bin=mysql-bin 
-binlog-format=ROW 
-server_id=1 
-max_connections=1000
-
-init_connect='SET collation_connection = utf8mb4_unicode_ci'
-init_connect='SET NAMES utf8mb4'
-character-set-server=utf8
-collation-server=utf8mb4_unicode_ci
-skip-character-set-client-handshake
 ```
 :wq! 保存退出。  
 &nbsp;&nbsp;
