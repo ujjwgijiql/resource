@@ -120,7 +120,7 @@ socket=/opt/mysql/mysql.sock
 
 symbolic-links=0
 log-error=/opt/logs/mysql/mysqld.log
-pid-file=/opt/mysqld/mysqld.pid
+pid-file=/opt/mysql/mysqld/mysqld.pid
 sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'
 [client]
 default-character-set=utf8mb4
@@ -151,7 +151,7 @@ skip-character-set-client-handshake
 # chmod 755 mysql.sock
 ```
 
-创建文件/opt/mysqld/mysqld.pid：
+创建文件/opt/mysql/mysqld/mysqld.pid：
 ```shell
 # mkdir mysqld
 # cd mysqld
