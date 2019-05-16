@@ -263,6 +263,8 @@ socket=/opt/mysql/mysql.sock
 但是，若输入相关命令，则会提示你修改用户密码（注意后面一定要加；）。  
 ```shell
 mysql> show databases;
+ERROR 1820 (HY000): You must reset your password using ALTER USER statement before executing this statement.
+mysql> 
 ```
 假设密码修改为xh2018
 ```shell
