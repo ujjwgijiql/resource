@@ -166,7 +166,7 @@ skip-character-set-client-handshake
 ```shell
 # touch /opt/logs/mysql/mysqld.log
 # chown -R mysql:mysql /opt/logs/mysql
-# cd log
+# cd /opt/logs/mysql/
 # chmod 755 mysqld.log
 ```
 &nbsp;&nbsp;
