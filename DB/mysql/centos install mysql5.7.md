@@ -248,3 +248,29 @@ mysql> quit;
 &nbsp;&nbsp;
 
 ### 开机服务启动设置：
+把support-files/mysql.server 拷贝为/etc/init.d/mysql：
+```shell
+# cp -a /usr/local/mysql/support-files/mysql.server /etc/init.d/mysql
+```
+
+查看mysql服务是否在服务配置中
+```shell
+# chkconfig --list mysql
+```
+
+若没有，则把mysql注册为开机启动的服务，然后在进行查看
+```shell
+# chkconfig --add mysql
+# chkconfig --list mysql
+```
+
+启动 或 停止
+```shell
+# service mysql start
+# service mysql stop
+```
+
+服务启动后，直接运行mysql -u root -p即可登录，不需要进入到对应的目录。
+```shell
+# ln -s /usr/local/mysql/bin/mysql /usr/bin
+```
