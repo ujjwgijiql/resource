@@ -113,7 +113,7 @@ __主目录权限处理__
 ```
 修改内容:
 ```shell
-sedir=/usr/local/mysql
+basedir=/usr/local/mysql
 datadir=/opt/mysql/data
 port = 3306
 socket=/opt/mysql/mysql.sock
