@@ -177,6 +177,14 @@ default-character-set=utf8mb4
 # cd /opt/logs/mysql/
 # chmod 755 mysqld.log
 ```
+
+创建文件/opt/mysql/logs/mysql-bin
+```shell
+# touch /opt/mysql/logs/mysql-bin
+# chown -R mysql:mysql /opt/mysql/logs
+# cd /opt/mysql/logs/
+# chmod 755 mysql-bin
+```
 &nbsp;&nbsp;
 
 ### 安装和初始化数据库
