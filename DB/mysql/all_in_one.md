@@ -13,9 +13,27 @@
 * 更进一步，这样做相当于在应用中实现了哈希关联，而不是使用MySQL的嵌套循环关联。某些场景哈希关联的效率要高很多。
 
 * 在很多场景下，通过重构查询将关联放到应用程序中将会更加高效，这样的场景有很多，比如：当应用能够方便地缓存单个查询的结果的时候、当可以将数据分布到不同的MySQL服务器上的时候、当能够使用IN（）的方式代替关联查询的时候、当查询中使用同一个数据表的时候。
-&nbsp;    
-&nbsp;    
-&nbsp;    
-&nbsp;    
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+
 # 数据库密码加密
 [durid数据库密码加密](https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter)
+&nbsp;  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+
+# Mysql的update结合select更新数据
+```sql
+update panshi_sms_dev.ps_sms_product as a
+ inner join (select id,
+             concat('2019-06-24 ', date_format(create_time, '%H:%i:%s')) as modify_time,
+             concat('2019-06-24 ', date_format(modify_time, '%H:%i:%s')) as create_time
+             from panshi_sms_dev.ps_sms_product where id = 135404) as b
+	      on a.id = b.id
+  set a.create_time = b.create_time,
+      a.modify_time = b.modify_time
+where a.id = 135404;
+```
