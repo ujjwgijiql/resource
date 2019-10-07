@@ -62,12 +62,12 @@ Heap
  Metaspace       used 8652K, capacity 8946K, committed 9088K, reserved 1056768K
   class space    used 1060K, capacity 1115K, committed 1152K, reserved 1048576K
 ```
-&emsp;&emsp;日志输出时首先是操作系统、JRE相关信息，输出的是64位操作系统（windows-amd64），JRE (1.8.0_202-b08)版本。  
-&emsp;&emsp;接下来是内存空间，物理内存16G，其中8.65G空闲，交换区18.25G,其中9.25G空闲。  
-&emsp;&emsp;我们并没有指定过多的选项，JVM帮我们增加了一些默认选项，即：CommandLine flags: -XX:InitialHeapSize=266456128 -XX:MaxHeapSize=4263298048 -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation -XX:+UseParallelGC  
-&emsp;&emsp;-XX:InitialHeapSize和-XX:MaxHeapSize就是我们比较熟悉的-Xms和-Xmx，它们允许我们指定JVM的初始和最大堆内存大小。  
-&emsp;&emsp;自动添加的-XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation这三个选项和OOP有关。  OOP的全称是Ordinary Object Pointer，即普通对象指针。通常64位的JVM消耗的内存会比32位的大1.5倍，这是因为对象指针在64位架构下，长度会翻倍（更宽的寻址）。对于那些将要从32位平台移植到64位的应用来说，平白无故多了1/2的内存占用，作为一个开发者不愿意看到这种场景。所以从JDK1.6update14开始，64bitJVM正式支持了-XX:+UseCompressedOops这个可以压缩指针，直到节约内存占用的选项。CompressedOops的实现方式是在机器码中植入压缩与解压指令，可能会给JVM增加额外的开销。  
+* 日志输出时首先是操作系统、JRE相关信息，输出的是64位操作系统（windows-amd64），JRE (1.8.0_202-b08)版本。  
+* 接下来是内存空间，物理内存16G，其中8.65G空闲，交换区18.25G,其中9.25G空闲。  
+* 我们并没有指定过多的选项，JVM帮我们增加了一些默认选项，即：CommandLine flags: -XX:InitialHeapSize=266456128 -XX:MaxHeapSize=4263298048 -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation -XX:+UseParallelGC  
+* -XX:InitialHeapSize和-XX:MaxHeapSize就是我们比较熟悉的-Xms和-Xmx，它们允许我们指定JVM的初始和最大堆内存大小。  
+* 自动添加的-XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation这三个选项和OOP有关。  OOP的全称是Ordinary Object Pointer，即普通对象指针。通常64位的JVM消耗的内存会比32位的大1.5倍，这是因为对象指针在64位架构下，长度会翻倍（更宽的寻址）。对于那些将要从32位平台移植到64位的应用来说，平白无故多了1/2的内存占用，作为一个开发者不愿意看到这种场景。所以从JDK1.6update14开始，64bitJVM正式支持了-XX:+UseCompressedOops这个可以压缩指针，直到节约内存占用的选项。CompressedOops的实现方式是在机器码中植入压缩与解压指令，可能会给JVM增加额外的开销。  
 -XX:+UseCompressedClassPointers选项是在JDK8出现的，也是在永久区消失之后出现的新的选项，主要用于对类的原数据进行压缩。  
 -XX:-UseLargePagesIndividualAllocation和Oops是一起使用的，在大页内存使用发生时这个选项也会自动启用。  
-&emsp;&emsp;-XX:+UseParallelGC 表示当我们没有指定GC时，由于JDK采用的是JDK8，所以默认采用的ParallelGC。
+* -XX:+UseParallelGC 表示当我们没有指定GC时，由于JDK采用的是JDK8，所以默认采用的ParallelGC。
 
