@@ -69,5 +69,39 @@ Heap
 * 自动添加的-XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation这三个选项和OOP有关。  OOP的全称是Ordinary Object Pointer，即普通对象指针。通常64位的JVM消耗的内存会比32位的大1.5倍，这是因为对象指针在64位架构下，长度会翻倍（更宽的寻址）。对于那些将要从32位平台移植到64位的应用来说，平白无故多了1/2的内存占用，作为一个开发者不愿意看到这种场景。所以从JDK1.6update14开始，64bitJVM正式支持了-XX:+UseCompressedOops这个可以压缩指针，直到节约内存占用的选项。CompressedOops的实现方式是在机器码中植入压缩与解压指令，可能会给JVM增加额外的开销。  
 -XX:+UseCompressedClassPointers选项是在JDK8出现的，也是在永久区消失之后出现的新的选项，主要用于对类的原数据进行压缩。  
 -XX:-UseLargePagesIndividualAllocation和Oops是一起使用的，在大页内存使用发生时这个选项也会自动启用。  
-* -XX:+UseParallelGC 表示当我们没有指定GC时，由于JDK采用的是JDK8，所以默认采用的ParallelGC。
+* -XX:+UseParallelGC 表示当我们没有指定GC时，由于JDK采用的是JDK8，所以默认采用的ParallelGC。  
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+## 3、-XX:+UseSerialGC
+&emsp;&emsp;Serial GC是HotSpot客户端模式VM的默认GC，它是一种独占式的GC，即运行过程中会导致应用程序暂停（停顿），并且由于它是单线程执行的，所以停顿时间会比较长。Serial GC在老年代使用了一种叫做“Mark-Sweep-Compact”的算法，它适用于CPU核数较少且使用的内存空间较少的应用程序的场景。  
+&emsp;&emsp;Serial GC和Parallel GC的差别是一个采用单线程，另一个采用多线程的处理方式。  
+&emsp;&emsp;在JVM的运行选项里添加-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log -XX:+UseSerialGC
+```shell
+Java HotSpot(TM) 64-Bit Server VM (25.202-b08) for windows-amd64 JRE (1.8.0_202-b08), built on Dec 15 2018 19:54:30 by "java_re" with MS VC++ 10.0 (VS2010)
+Memory: 4k page, physical 16653508k(8948552k free), swap 19143876k(9518196k free)
+CommandLine flags: -XX:InitialHeapSize=266456128 -XX:MaxHeapSize=4263298048 -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation -XX:+UseSerialGC 
+Heap
+ def new generation   total 78656K, used 30785K [0x00000006c1e00000, 0x00000006c7350000, 0x0000000716950000)
+  eden space 69952K,  44% used [0x00000006c1e00000, 0x00000006c3c104e8, 0x00000006c6250000)
+  from space 8704K,   0% used [0x00000006c6250000, 0x00000006c6250000, 0x00000006c6ad0000)
+  to   space 8704K,   0% used [0x00000006c6ad0000, 0x00000006c6ad0000, 0x00000006c7350000)
+ tenured generation   total 174784K, used 0K [0x0000000716950000, 0x0000000721400000, 0x00000007c0000000)
+   the space 174784K,   0% used [0x0000000716950000, 0x0000000716950000, 0x0000000716950200, 0x0000000721400000)
+ Metaspace       used 8652K, capacity 8950K, committed 9088K, reserved 1056768K
+  class space    used 1060K, capacity 1115K, committed 1152K, reserved 1048576K
+```
+输出日志声明了使用-XX:+UseSerialGC选项，其它选项没有变化，对应的输出由Parallel GC的“PSYoungGen”变化成了“def new generation”，这个主要是由于收集器的不同而造成的，来看一下规律。
+* 串行收集器：即输出 DefNew，是使用-XX:+UseSerialGC（年轻代、老年代都用串行回收收集器）运行后输出的。
+* 并行收集器：即输出 ParNew，是使用-XX:+UseParNewGC(年轻代使用并行收集器，老年代用串行回收收集器) 或者-XX:+UseConcMarkSweepGC(年轻代使用并行收集器，老年代使用CMS)运行后输出的。
+* PSYoungGen：是使用-XX:+UseParallelOldGC(年轻代、老年代都使用并行回收收集器)或者-XX:+UseParallelGC(年轻代使用并行收集器，老年代使用串行回收收集器)运行输出的。
+* Garbage-First heap: 是使用-XX:+UseG1GC(G1收集器)运行输出的。  
+&emsp;&emsp;一般来说，目前只在嵌入式应用场景下才使用Serial GC.
+
+
+
+
+
+
+
 
