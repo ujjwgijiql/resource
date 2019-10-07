@@ -96,6 +96,7 @@ Heap
 * 并行收集器：即输出 ParNew，是使用-XX:+UseParNewGC(年轻代使用并行收集器，老年代用串行回收收集器) 或者-XX:+UseConcMarkSweepGC(年轻代使用并行收集器，老年代使用CMS)运行后输出的。
 * PSYoungGen：是使用-XX:+UseParallelOldGC(年轻代、老年代都使用并行回收收集器)或者-XX:+UseParallelGC(年轻代使用并行收集器，老年代使用串行回收收集器)运行输出的。
 * Garbage-First heap: 是使用-XX:+UseG1GC(G1收集器)运行输出的。  
+
 &emsp;&emsp;一般来说，目前只在嵌入式应用场景下才使用Serial GC.
 
 
