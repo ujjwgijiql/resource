@@ -91,15 +91,44 @@ Heap
  Metaspace       used 8652K, capacity 8950K, committed 9088K, reserved 1056768K
   class space    used 1060K, capacity 1115K, committed 1152K, reserved 1048576K
 ```
-输出日志声明了使用-XX:+UseSerialGC选项，其它选项没有变化，对应的输出由Parallel GC的“PSYoungGen”变化成了“def new generation”，这个主要是由于收集器的不同而造成的，来看一下规律。
+&emsp;&emsp;输出日志声明了使用-XX:+UseSerialGC选项，其它选项没有变化，对应的输出由Parallel GC的“PSYoungGen”变化成了“def new generation”，这个主要是由于收集器的不同而造成的，来看一下规律。
 * 串行收集器：即输出 DefNew，是使用-XX:+UseSerialGC（年轻代、老年代都用串行回收收集器）运行后输出的。
 * 并行收集器：即输出 ParNew，是使用-XX:+UseParNewGC(年轻代使用并行收集器，老年代用串行回收收集器) 或者-XX:+UseConcMarkSweepGC(年轻代使用并行收集器，老年代使用CMS)运行后输出的。
 * PSYoungGen：是使用-XX:+UseParallelOldGC(年轻代、老年代都使用并行回收收集器)或者-XX:+UseParallelGC(年轻代使用并行收集器，老年代使用串行回收收集器)运行输出的。
 * Garbage-First heap: 是使用-XX:+UseG1GC(G1收集器)运行输出的。  
 
-&emsp;&emsp;一般来说，目前只在嵌入式应用场景下才使用Serial GC.
+&emsp;&emsp;一般来说，目前只在嵌入式应用场景下才使用Serial GC.  
+&nbsp;&nbsp;
+&nbsp;&nbsp;
 
+## 4、-XX:+UseParNewGC
+&emsp;&emsp;ParNew GC是一种独占式GC，和Serial GC的区别是多线程GC执行。  
+&emsp;&emsp;在JVM的运行选项里添加-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log -XX:+UseParNewGC
+```shell
+Java HotSpot(TM) 64-Bit Server VM (25.202-b08) for windows-amd64 JRE (1.8.0_202-b08), built on Dec 15 2018 19:54:30 by "java_re" with MS VC++ 10.0 (VS2010)
+Memory: 4k page, physical 16653508k(8951836k free), swap 19143876k(9536836k free)
+CommandLine flags: -XX:InitialHeapSize=266456128 -XX:MaxHeapSize=4263298048 -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation -XX:+UseParNewGC 
+Heap
+ par new generation   total 78656K, used 30784K [0x00000006c1e00000, 0x00000006c7350000, 0x0000000716950000)
+  eden space 69952K,  44% used [0x00000006c1e00000, 0x00000006c3c10260, 0x00000006c6250000)
+  from space 8704K,   0% used [0x00000006c6250000, 0x00000006c6250000, 0x00000006c6ad0000)
+  to   space 8704K,   0% used [0x00000006c6ad0000, 0x00000006c6ad0000, 0x00000006c7350000)
+ tenured generation   total 174784K, used 0K [0x0000000716950000, 0x0000000721400000, 0x00000007c0000000)
+   the space 174784K,   0% used [0x0000000716950000, 0x0000000716950000, 0x0000000716950200, 0x0000000721400000)
+ Metaspace       used 8659K, capacity 8954K, committed 9088K, reserved 1056768K
+  class space    used 1060K, capacity 1115K, committed 1152K, reserved 1048576K
+```
+正确的输出了“par new generation”。除了正常的GC日志输出以外，在运行时还会看到打印输出警告信息。
+```shell
+Java HotSpot(TM) 64-Bit Server VM warning: Using the ParNew young collector with the Serial old collector is deprecated and will likely be removed in a future release
+```
+这段话说明未来ParNew垃圾回收器不能再用了。
+&nbsp;&nbsp;
+&nbsp;&nbsp;
 
+## 5、-XX:+UseParallelGC
+&emsp;&emsp;这一就是1里默认不选择GC时的输出，VM选项为：-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log -XX:+UseParallelGC  
+&emsp;&emsp;Parallel GC是JDK7之后的默认GC，它通过多线程的方式减缓了独占式GC的副作用（停顿时间比较长）。年轻代和老年代在Parallel GC里都是并行执行并且是独占的，老年代也执行了压缩操作，这个压缩操作指的是移动存活对象到相邻位置，这样可以减少内存浪费，更好的实现内存布局。  
 
 
 
