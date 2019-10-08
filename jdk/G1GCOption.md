@@ -129,9 +129,297 @@ Java HotSpot(TM) 64-Bit Server VM warning: Using the ParNew young collector with
 ## 5、-XX:+UseParallelGC
 &emsp;&emsp;这一就是1里默认不选择GC时的输出，VM选项为：-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log -XX:+UseParallelGC  
 &emsp;&emsp;Parallel GC是JDK7之后的默认GC，它通过多线程的方式减缓了独占式GC的副作用（停顿时间比较长）。年轻代和老年代在Parallel GC里都是并行执行并且是独占的，老年代也执行了压缩操作，这个压缩操作指的是移动存活对象到相邻位置，这样可以减少内存浪费，更好的实现内存布局。  
+&emsp;&emsp;Serial GC使用单一线程执行GC，而Parallel GC则使用多个线程并发执行，因此Parallel GC较Serial GC具有更快的回收速度。Parallel GC适用于多核CPU且使用了较大内存空间的场景。
+&emsp;&emsp;此外，Parallel GC又被称为“高吞吐GC（Throughout GC）”。
 
+&nbsp;&nbsp;
+&nbsp;&nbsp;
 
+## 6、-XX:+UseParallelOldGC
+&emsp;&emsp;Parallel Old GC在JDK5被引入，与Parallel GC相比，唯一的区别在于Parallel Old GC算法是为老年代设计的。它的执行过程分为三步，即标记（Mark）、总结（Summary）、压缩（Compaction）。其中Summary步骤为存活的对象在已执行过GC的空间上标出位置，因此与Mark-Sweep-Compact算法中的Sweep步骤有所区别，并需要一些复杂步骤才能完成。
+&emsp;&emsp;在JDK7U45之前，我们在使用Parallel GC时是区分年轻代和老年代的，即老年代并行回收收集器需要通过设置UseParallelOldGC来启动。在JDK7U45之后两者合并了。
 
+&nbsp;&nbsp;
+&nbsp;&nbsp;
 
+## 7、-XX:+UseConcMarkSweepGC
+&emsp;&emsp;并发标记-清理（ Concurrent Mark-Sweep）GC相比其它GC都要复杂。初始标记（Initial Mark）比较简单，只有靠近类加载器的存活对象会被标记，因此停顿时间（Stop-the-world pause）比较短暂。在并发标记（Concurrent Mark）阶段，刚被确认和标记过的存活对象所关联的对象将会被跟踪和检测存活状态。此步骤的不同之处在于有多个线程并行处理此过程。在重标记（Remark）阶段，由并发标记所关联的新增或中止的对象会被检测。在最后的并发清理（Concurrent Sweep）阶段，垃圾回收过程被真正地执行。在垃圾回收执行过程中，其他线程依然可以保持并行执行。受益于CMS GC的执行方式，在GC执行期间系统中断的时间非常短暂（G1 GC 也采纳了这种设计文案）。此外，CMS GC也被称为低延迟GC，适用于所有应用对响应时间要求比较严格的场景。
+&emsp;&emsp;在JVM的运行选项里添加-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log -XX:+UseConcMarkSweepGC
+```shell
+Java HotSpot(TM) 64-Bit Server VM (25.202-b08) for windows-amd64 JRE (1.8.0_202-b08), built on Dec 15 2018 19:54:30 by "java_re" with MS VC++ 10.0 (VS2010)
+Memory: 4k page, physical 16653508k(9031864k free), swap 19143876k(8089536k free)
+CommandLine flags: -XX:InitialHeapSize=266456128 -XX:MaxHeapSize=4263298048 -XX:MaxNewSize=872415232 -XX:MaxTenuringThreshold=6 -XX:OldPLABSize=16 -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseConcMarkSweepGC -XX:-UseLargePagesIndividualAllocation -XX:+UseParNewGC 
+Heap
+ par new generation   total 78656K, used 30783K [0x00000006c1e00000, 0x00000006c7350000, 0x00000006f5e00000)
+  eden space 69952K,  44% used [0x00000006c1e00000, 0x00000006c3c0fdb8, 0x00000006c6250000)
+  from space 8704K,   0% used [0x00000006c6250000, 0x00000006c6250000, 0x00000006c6ad0000)
+  to   space 8704K,   0% used [0x00000006c6ad0000, 0x00000006c6ad0000, 0x00000006c7350000)
+ concurrent mark-sweep generation total 174784K, used 0K [0x00000006f5e00000, 0x00000007008b0000, 0x00000007c0000000)
+ Metaspace       used 8666K, capacity 8950K, committed 9088K, reserved 1056768K
+  class space    used 1060K, capacity 1115K, committed 1152K, reserved 1048576K
+```
+&emsp;&emsp;在使用CMS GC之前需要对系统做全面的分析。另外，为了避免过多的内存碎片而需要执行压缩任务时，CMS GC会比任何其他GC带来更多的Stop-the-world时间，所以需要分析和判断压缩任务执行的频率及其耗时情况。
+&nbsp;&nbsp;
+&nbsp;&nbsp;
 
+## 8、-XX:+UseG1GC
+&emsp;&emsp;使用UseG1GC这个选项要求JDK7或JDK8的对应的JVM采用G1 GC。
+&emsp;&emsp;在JVM的运行选项里添加-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log -XX:+UseG1GC
+```shell
+Java HotSpot(TM) 64-Bit Server VM (25.202-b08) for windows-amd64 JRE (1.8.0_202-b08), built on Dec 15 2018 19:54:30 by "java_re" with MS VC++ 10.0 (VS2010)
+Memory: 4k page, physical 16653508k(8938604k free), swap 19143876k(8349288k free)
+CommandLine flags: -XX:InitialHeapSize=266456128 -XX:MaxHeapSize=4263298048 -XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC -XX:-UseLargePagesIndividualAllocation 
+Heap
+ garbage-first heap   total 262144K, used 11264K [0x00000006c1e00000, 0x00000006c1f00800, 0x00000007c0000000)
+  region size 1024K, 12 young (12288K), 0 survivors (0K)
+ Metaspace       used 8658K, capacity 8954K, committed 9088K, reserved 1056768K
+  class space    used 1060K, capacity 1115K, committed 1152K, reserved 1048576K
+
+```
+&emsp;&emsp;G1 GC的日志输出和其它GC有所不同，它更加简洁。这里没有进入到一个评估阶段，评估阶段就是确认有多少对象需要被回收，通常是针对年轻代或者年轻代+老年代的。从上面的输出我们可以看出一共有256MB（262144/1024）的堆内存空间，其中使用了11MB。Region每个是1MB，有12个年轻代Region。元数据空间的使用情况也做了相应的介绍，使用了8.5MB，可用的为8.7MB。
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+## 9、-XX:+PrintGCApplicationStoppedTime
+&emsp;&emsp;如果使用该选项，会输出GC造成应用程序暂停的时间。一般和-XX:+PrintGCApplicationConcurrentTime组合起来一起使用，这样比较有利于查看输出。
+&emsp;&emsp;在JVM的运行选项里添加-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log -XX:+UseG1GC
+```shell
+Java HotSpot(TM) 64-Bit Server VM (25.202-b08) for windows-amd64 JRE (1.8.0_202-b08), built on Dec 15 2018 19:54:30 by "java_re" with MS VC++ 10.0 (VS2010)
+Memory: 4k page, physical 16653508k(8662324k free), swap 19143876k(8269020k free)
+CommandLine flags: -XX:InitialHeapSize=266456128 -XX:MaxHeapSize=4263298048 -XX:+PrintGC -XX:+PrintGCApplicationConcurrentTime -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC -XX:-UseLargePagesIndividualAllocation 
+1.027: Application time: 0.9688679 seconds
+1.029: Total time for which application threads were stopped: 0.0000442 seconds, Stopping threads took: 0.0000147 seconds
+2.729: Application time: 1.6993237 seconds
+2.729: Total time for which application threads were stopped: 0.0000989 seconds, Stopping threads took: 0.0000112 seconds
+2.730: Application time: 0.0014230 seconds
+2.730: Total time for which application threads were stopped: 0.0000422 seconds, Stopping threads took: 0.0000071 seconds
+2.733: Application time: 0.0023802 seconds
+2.733: Total time for which application threads were stopped: 0.0000343 seconds, Stopping threads took: 0.0000065 seconds
+3.732: Application time: 0.9996228 seconds
+3.732: Total time for which application threads were stopped: 0.0001349 seconds, Stopping threads took: 0.0000425 seconds
+4.129: Application time: 0.3968763 seconds
+4.130: Total time for which application threads were stopped: 0.0001919 seconds, Stopping threads took: 0.0000421 seconds
+5.090: Application time: 0.9604578 seconds
+5.090: Total time for which application threads were stopped: 0.0000321 seconds, Stopping threads took: 0.0000146 seconds
+Heap
+ garbage-first heap   total 262144K, used 11264K [0x00000006c1e00000, 0x00000006c1f00800, 0x00000007c0000000)
+  region size 1024K, 12 young (12288K), 0 survivors (0K)
+ Metaspace       used 8666K, capacity 8950K, committed 9088K, reserved 1056768K
+  class space    used 1060K, capacity 1115K, committed 1152K, reserved 1048576K
+5.091: Application time: 0.0006537 seconds
+```
+看一下这两行输出
+```shell
+1.027: Application time: 0.9688679 seconds
+1.029: Total time for which application threads were stopped: 0.0000442 seconds, Stopping threads took: 0.0000147 seconds
+```
+&emsp;&emsp;这里表示应用程序执行了0.96s，GC线程造成的停顿时间大约为0.0000442s。由于程序在运行过程中进行了多次回收，所以你看到这里有多次的时间打印。如果发现某个时间很长，你就要关注代码和设计了，分析哪里可能出现了实现或设计弱点（不一点是缺陷），再根据实际情况进行优化，也许是代码逻辑复杂5造成的，也可能是代码编写时频繁创建对象造成的。
+&emsp;&emsp;这里应用程序会被暂停是由于G1 GC针对年轻代（有时候是年轻代+老年代）有一个评估阶段，这个评估阶段实质上是在做数据拷贝，既然是拷贝，就要有一个基准点，那么为了维护这个点，需要设置对应的应用程序暂停时间，这个时间段就称为保护点（safepoint）。
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+## 10、-XX:ConcGCThreads
+&emsp;&emsp;这个选项用来设置与Java应用程序线程并行执行的GC线程数量，默认为GC独占时运行线程的1/4。这个选项设置过大会导致Java应用程序可以使用的CPU资源减少，如果小一点则会对应用程序有利，但是过小就会增加GC并行循环的执行时间，反过来减少Java应用程序的运行时间（因为独占期时间拉长）。
+&emsp;&emsp;设置一个比较大的ConcGCThreads值，比如-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log -XX:+UseG1GC -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -XX:ConcGCThreads=16，会看到JVM抛出如下用红色标记的错误，表明在初始化JVM时出错，不能够创建并行标记阶段，并且最终拒绝执行程序。这个错误表明当前机器只允许起动10个试行GC线程，这是根据运行程序所在机器的CPU的核数计算出来的。
+```shell
+Error occurred during initialization of VM
+Could not create/initialize ConcurrentMark
+Java HotSpot(TM) 64-Bit Server VM warning: Can't have more ConcGCThreads (16) than ParallelGCThreads (10).
+```
+&emsp;&emsp;把ConcGCThreads改为10之后，即-XX:ConcGCThreads=10，运行输出
+```shell
+Java HotSpot(TM) 64-Bit Server VM (25.202-b08) for windows-amd64 JRE (1.8.0_202-b08), built on Dec 15 2018 19:54:30 by "java_re" with MS VC++ 10.0 (VS2010)
+Memory: 4k page, physical 16653508k(9675948k free), swap 19143876k(7236064k free)
+CommandLine flags: -XX:ConcGCThreads=10 -XX:InitialHeapSize=266456128 -XX:MaxHeapSize=4263298048 -XX:+PrintGC -XX:+PrintGCApplicationConcurrentTime -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC -XX:-UseLargePagesIndividualAllocation 
+1.028: Application time: 0.9649023 seconds
+1.028: Total time for which application threads were stopped: 0.0000464 seconds, Stopping threads took: 0.0000133 seconds
+3.028: Application time: 2.0005951 seconds
+3.029: Total time for which application threads were stopped: 0.0000324 seconds, Stopping threads took: 0.0000141 seconds
+3.988: Application time: 0.9598846 seconds
+3.989: Total time for which application threads were stopped: 0.0001156 seconds, Stopping threads took: 0.0000133 seconds
+3.990: Application time: 0.0015112 seconds
+3.990: Total time for which application threads were stopped: 0.0000510 seconds, Stopping threads took: 0.0000091 seconds
+3.993: Application time: 0.0025014 seconds
+3.993: Total time for which application threads were stopped: 0.0000532 seconds, Stopping threads took: 0.0000076 seconds
+4.131: Application time: 0.1379436 seconds
+4.131: Total time for which application threads were stopped: 0.0000840 seconds, Stopping threads took: 0.0000151 seconds
+5.095: Application time: 0.9645026 seconds
+5.095: Total time for which application threads were stopped: 0.0000670 seconds, Stopping threads took: 0.0000508 seconds
+Heap
+ garbage-first heap   total 262144K, used 11264K [0x00000006c1e00000, 0x00000006c1f00800, 0x00000007c0000000)
+  region size 1024K, 12 young (12288K), 0 survivors (0K)
+ Metaspace       used 8665K, capacity 8954K, committed 9088K, reserved 1056768K
+  class space    used 1060K, capacity 1115K, committed 1152K, reserved 1048576K
+5.096: Application time: 0.0010852 seconds
+```
+&emsp;&emsp;如果不设置并行标记线程的数量，默认情况下是用这个公式计算出来的：
+```
+ConcGCThreads=Max((ParallelGCThreads#+2)/4, 1)
+```
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+## 11、-XX:G1HeapRegionSize
+&emsp;&emsp;这是G1独有的选项，它是专门针对Region这个概念的对应设置选项，后续GC应该会继续采用Region这个概念。Region的大小默认为堆大小的1/2000，也可以设置为1MB、2MB、4MB、8MB、16MB以及32MB，这六个划分档次。
+&emsp;&emsp;增大Region块的大小有利于处理大对象。反之，如果Region大小设置过小，则会降低G1的灵活性，对各个年龄代的大小都会造成分配问题。
+&emsp;&emsp;在JVM的运行选项里添加-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log  -XX:+UseG1GC -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -XX:G1HeapRegionSize=32M
+```shell
+Java HotSpot(TM) 64-Bit Server VM (25.202-b08) for windows-amd64 JRE (1.8.0_202-b08), built on Dec 15 2018 19:54:30 by "java_re" with MS VC++ 10.0 (VS2010)
+Memory: 4k page, physical 16653508k(9503920k free), swap 19143876k(7407324k free)
+CommandLine flags: -XX:G1HeapRegionSize=33554432 -XX:InitialHeapSize=266456128 -XX:MaxHeapSize=4263298048 -XX:+PrintGC -XX:+PrintGCApplicationConcurrentTime -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC -XX:-UseLargePagesIndividualAllocation 
+1.023: Application time: 0.9650295 seconds
+1.023: Total time for which application threads were stopped: 0.0000472 seconds, Stopping threads took: 0.0000137 seconds
+1.287: Application time: 0.2635353 seconds
+1.287: Total time for which application threads were stopped: 0.0000919 seconds, Stopping threads took: 0.0000112 seconds
+1.288: Application time: 0.0014336 seconds
+1.288: Total time for which application threads were stopped: 0.0000448 seconds, Stopping threads took: 0.0000071 seconds
+1.290: Application time: 0.0023294 seconds
+1.290: Total time for which application threads were stopped: 0.0000516 seconds, Stopping threads took: 0.0000100 seconds
+2.291: Application time: 1.0001051 seconds
+2.291: Total time for which application threads were stopped: 0.0001680 seconds, Stopping threads took: 0.0000585 seconds
+3.291: Application time: 1.0000774 seconds
+3.291: Total time for which application threads were stopped: 0.0000413 seconds, Stopping threads took: 0.0000162 seconds
+4.126: Application time: 0.8348864 seconds
+4.126: Total time for which application threads were stopped: 0.0004491 seconds, Stopping threads took: 0.0000945 seconds
+5.088: Application time: 0.9617559 seconds
+5.088: Total time for which application threads were stopped: 0.0000416 seconds, Stopping threads took: 0.0000172 seconds
+Heap
+ garbage-first heap   total 262144K, used 0K [0x00000006c0000000, 0x00000006c2000040, 0x00000007c0000000)
+  region size 32768K, 1 young (32768K), 0 survivors (0K)
+ Metaspace       used 8661K, capacity 8950K, committed 9088K, reserved 1056768K
+  class space    used 1060K, capacity 1115K, committed 1152K, reserved 1048576K
+5.089: Application time: 0.0008841 seconds
+```
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+## 12、-XX:G1HeapWastePercent
+&emsp;&emsp;这个选项控制G1 GC不回收的空闲内存比例，默认是堆内存的5%，G1 GC在回收过程中会回收所有Region的内存，并持续地做这个工作直到空闲内存比例达到设置的这个值为止，所以对于设置了较大值的堆内存来说，需要要采用比较低的比例，这样可以确保较小部分的内存不被回收。
+&emsp;&emsp;设置不回收比例为99%，在JVM的运行选项里添加:-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log  -XX:+UseG1GC -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -XX:G1HeapRegionSize=2M -XX:G1HeapWastePercent=99
+```shell
+Java HotSpot(TM) 64-Bit Server VM (25.202-b08) for windows-amd64 JRE (1.8.0_202-b08), built on Dec 15 2018 19:54:30 by "java_re" with MS VC++ 10.0 (VS2010)
+Memory: 4k page, physical 16653508k(9199344k free), swap 19143876k(7357736k free)
+CommandLine flags: -XX:G1HeapRegionSize=2097152 -XX:G1HeapWastePercent=99 -XX:InitialHeapSize=266456128 -XX:MaxHeapSize=4263298048 -XX:+PrintGC -XX:+PrintGCApplicationConcurrentTime -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC -XX:-UseLargePagesIndividualAllocation 
+0.527: Application time: 0.4656978 seconds
+0.527: Total time for which application threads were stopped: 0.0001081 seconds, Stopping threads took: 0.0000108 seconds
+0.528: Application time: 0.0013867 seconds
+0.528: Total time for which application threads were stopped: 0.0000346 seconds, Stopping threads took: 0.0000057 seconds
+0.531: Application time: 0.0023573 seconds
+0.531: Total time for which application threads were stopped: 0.0000346 seconds, Stopping threads took: 0.0000063 seconds
+1.530: Application time: 0.9995402 seconds
+1.530: Total time for which application threads were stopped: 0.0000526 seconds, Stopping threads took: 0.0000128 seconds
+3.531: Application time: 2.0005495 seconds
+3.531: Total time for which application threads were stopped: 0.0001111 seconds, Stopping threads took: 0.0000429 seconds
+4.130: Application time: 0.5983626 seconds
+4.130: Total time for which application threads were stopped: 0.0000776 seconds, Stopping threads took: 0.0000169 seconds
+5.096: Application time: 0.9665322 seconds
+5.096: Total time for which application threads were stopped: 0.0000282 seconds, Stopping threads took: 0.0000128 seconds
+Heap
+ garbage-first heap   total 262144K, used 12288K [0x00000006c1e00000, 0x00000006c2000400, 0x00000007c0000000)
+  region size 2048K, 7 young (14336K), 0 survivors (0K)
+ Metaspace       used 8650K, capacity 8946K, committed 9088K, reserved 1056768K
+  class space    used 1060K, capacity 1115K, committed 1152K, reserved 1048576K
+5.097: Application time: 0.0009225 seconds
+```
+&emsp;&emsp;另一个极端，设置为1%，在JVM的运行选项里添加:-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log  -XX:+UseG1GC -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -XX:G1HeapRegionSize=2M -XX:G1HeapWastePercent=1
+```shell
+Java HotSpot(TM) 64-Bit Server VM (25.202-b08) for windows-amd64 JRE (1.8.0_202-b08), built on Dec 15 2018 19:54:30 by "java_re" with MS VC++ 10.0 (VS2010)
+Memory: 4k page, physical 16653508k(9168472k free), swap 19143876k(7351944k free)
+CommandLine flags: -XX:G1HeapRegionSize=2097152 -XX:G1HeapWastePercent=1 -XX:InitialHeapSize=266456128 -XX:MaxHeapSize=4263298048 -XX:+PrintGC -XX:+PrintGCApplicationConcurrentTime -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC -XX:-UseLargePagesIndividualAllocation 
+1.026: Application time: 0.9649561 seconds
+1.026: Total time for which application threads were stopped: 0.0000481 seconds, Stopping threads took: 0.0000135 seconds
+1.937: Application time: 0.9109309 seconds
+1.937: Total time for which application threads were stopped: 0.0001107 seconds, Stopping threads took: 0.0000130 seconds
+1.938: Application time: 0.0014136 seconds
+1.938: Total time for which application threads were stopped: 0.0000497 seconds, Stopping threads took: 0.0000067 seconds
+1.941: Application time: 0.0024418 seconds
+1.941: Total time for which application threads were stopped: 0.0000557 seconds, Stopping threads took: 0.0000091 seconds
+2.941: Application time: 0.9998064 seconds
+2.941: Total time for which application threads were stopped: 0.0000504 seconds, Stopping threads took: 0.0000181 seconds
+4.127: Application time: 1.1868105 seconds
+4.127: Total time for which application threads were stopped: 0.0000645 seconds, Stopping threads took: 0.0000141 seconds
+5.093: Application time: 0.9657092 seconds
+5.093: Total time for which application threads were stopped: 0.0000352 seconds, Stopping threads took: 0.0000137 seconds
+Heap
+ garbage-first heap   total 262144K, used 12288K [0x00000006c1e00000, 0x00000006c2000400, 0x00000007c0000000)
+  region size 2048K, 7 young (14336K), 0 survivors (0K)
+ Metaspace       used 8668K, capacity 8946K, committed 9088K, reserved 1056768K
+  class space    used 1060K, capacity 1115K, committed 1152K, reserved 1048576K
+5.094: Application time: 0.0009615 seconds
+```
+&emsp;&emsp;这两个设置都是比较极端的，一般情况下我们不会做出调整，即采用5%的默认值。当设置为1%时，本例的差别不是很明显，但是GC线程造成的应用程序暂停时间已经比99%有了明显的增长。
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+## 13、-XX:G1MixedGCCountTarget
+&emsp;&emsp;老年代Region的回收时间通常来说比年轻代Region稍长一些，这个选项可以设置一个并行循环之后启动多少个混合GC，默认值是8个。设置一个比较大的值可以让G1 GC在老年代Region回收时多花一些时间，如果一个混合GC的停顿时间很长，说明它要做的事情很多，所以可以增大这个值的设置，但是如果这个值过大，也会造成并行循环等待混合GC完成的时间相应的增加。
+&emsp;&emsp;在JVM的运行选项里添加:-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log  -XX:+UseG1GC -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -XX:G1HeapRegionSize=2M -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=80
+```shell
+Java HotSpot(TM) 64-Bit Server VM (25.202-b08) for windows-amd64 JRE (1.8.0_202-b08), built on Dec 15 2018 19:54:30 by "java_re" with MS VC++ 10.0 (VS2010)
+Memory: 4k page, physical 16653508k(8581256k free), swap 19143876k(7207080k free)
+CommandLine flags: -XX:G1HeapRegionSize=2097152 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=80 -XX:InitialHeapSize=266456128 -XX:MaxHeapSize=4263298048 -XX:+PrintGC -XX:+PrintGCApplicationConcurrentTime -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC -XX:-UseLargePagesIndividualAllocation 
+1.025: Application time: 0.9649554 seconds
+1.025: Total time for which application threads were stopped: 0.0000471 seconds, Stopping threads took: 0.0000130 seconds
+3.642: Application time: 2.6170361 seconds
+3.642: Total time for which application threads were stopped: 0.0001221 seconds, Stopping threads took: 0.0000115 seconds
+3.644: Application time: 0.0014123 seconds
+3.644: Total time for which application threads were stopped: 0.0000421 seconds, Stopping threads took: 0.0000054 seconds
+3.646: Application time: 0.0023982 seconds
+3.646: Total time for which application threads were stopped: 0.0000366 seconds, Stopping threads took: 0.0000063 seconds
+4.128: Application time: 0.4824259 seconds
+4.129: Total time for which application threads were stopped: 0.0000943 seconds, Stopping threads took: 0.0000143 seconds
+5.091: Application time: 0.9628365 seconds
+5.091: Total time for which application threads were stopped: 0.0000308 seconds, Stopping threads took: 0.0000137 seconds
+Heap
+ garbage-first heap   total 262144K, used 12288K [0x00000006c1e00000, 0x00000006c2000400, 0x00000007c0000000)
+  region size 2048K, 7 young (14336K), 0 survivors (0K)
+ Metaspace       used 8662K, capacity 8958K, committed 9088K, reserved 1056768K
+  class space    used 1060K, capacity 1115K, committed 1152K, reserved 1048576K
+5.092: Application time: 0.0006737 seconds
+```
+&emsp;&emsp;这个选项和G1MixedGCLiveThresholdPercent选项（默认值为65%，指的是混合回收阶段回收老年代区间的上限阀值）有直接关系，G1MixedGCLiveThresholdPercent设置完毕后，对存活数据的回收上限为G1MixedGCLiveThresholdPercent的旧区域执行混合垃圾回收的目标次数，这个选项会自动调整为满足配置的阀值，以便能够快速回收对象。
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+## 14、-XX:+G1PrintRegionLivenessInfo
+&emsp;&emsp;开启这个选项会在标记循环阶段完成之后输出详细信息，专业一点的叫法是诊断选项，所以在使用之前需要开启选项UnlockDiagnosticVMOptions。这个选项启用后会打印堆内存内部每个Region里面的存活对象信息，这些信息包括使用率、RSet大小、回收一个Region的价值。（Region内容回收价值评估，即性价比）。
+&emsp;&emsp;这个选项输出的信息对于调试堆内Region是很有效的，不过对于一个很大的堆内存来说，由于每个Region信息都输出了，所以信息量也是挺大的。
+&emsp;&emsp;在JVM的运行选项里添加:-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log  -XX:+UseG1GC -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -XX:G1HeapRegionSize=2M -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=10 -XX:+G1PrintRegionLivenessInfo -XX:+UnlockDiagnosticVMOptions  
+直接运行发现抛错误：
+```shell
+Error: VM option 'G1PrintRegionLivenessInfo' is diagnostic and must be enabled via -XX:+UnlockDiagnosticVMOptions.
+```
+&emsp;&emsp;注意：-XX:+UnlockDiagnosticVMOptions必须放在-XX:+G1PrintRegionLivenessInfo的前面，证明VM的选项执行也是串行的，这就是为什么抛出了上面的错误。
+&emsp;&emsp;在JVM的运行选项里添加:-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log  -XX:+UseG1GC -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -XX:G1HeapRegionSize=2M -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=10 -XX:+UnlockDiagnosticVMOptions -XX:+G1PrintRegionLivenessInfo
+```shell
+Java HotSpot(TM) 64-Bit Server VM (25.202-b08) for windows-amd64 JRE (1.8.0_202-b08), built on Dec 15 2018 19:54:30 by "java_re" with MS VC++ 10.0 (VS2010)
+Memory: 4k page, physical 16653508k(8304752k free), swap 19143876k(6738464k free)
+CommandLine flags: -XX:G1HeapRegionSize=2097152 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=10 -XX:+G1PrintRegionLivenessInfo -XX:InitialHeapSize=266456128 -XX:MaxHeapSize=4263298048 -XX:+PrintGC -XX:+PrintGCApplicationConcurrentTime -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UnlockDiagnosticVMOptions -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseG1GC -XX:-UseLargePagesIndividualAllocation 
+1.025: Application time: 0.9615710 seconds
+1.025: Total time for which application threads were stopped: 0.0000474 seconds, Stopping threads took: 0.0000128 seconds
+1.495: Application time: 0.4691993 seconds
+1.495: Total time for which application threads were stopped: 0.0001211 seconds, Stopping threads took: 0.0000109 seconds
+1.496: Application time: 0.0016289 seconds
+1.496: Total time for which application threads were stopped: 0.0000797 seconds, Stopping threads took: 0.0000090 seconds
+1.500: Application time: 0.0033770 seconds
+1.500: Total time for which application threads were stopped: 0.0000775 seconds, Stopping threads took: 0.0000114 seconds
+2.499: Application time: 0.9994881 seconds
+2.499: Total time for which application threads were stopped: 0.0000426 seconds, Stopping threads took: 0.0000175 seconds
+3.500: Application time: 1.0002822 seconds
+3.500: Total time for which application threads were stopped: 0.0000416 seconds, Stopping threads took: 0.0000150 seconds
+4.130: Application time: 0.6302136 seconds
+4.130: Total time for which application threads were stopped: 0.0000676 seconds, Stopping threads took: 0.0000144 seconds
+5.101: Application time: 0.9711937 seconds
+5.101: Total time for which application threads were stopped: 0.0000282 seconds, Stopping threads took: 0.0000126 seconds
+Heap
+ garbage-first heap   total 262144K, used 12288K [0x00000006c1e00000, 0x00000006c2000400, 0x00000007c0000000)
+  region size 2048K, 7 young (14336K), 0 survivors (0K)
+ Metaspace       used 8663K, capacity 8950K, committed 9088K, reserved 1056768K
+  class space    used 1060K, capacity 1115K, committed 1152K, reserved 1048576K
+5.102: Application time: 0.0007128 seconds
+```
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+## 15、-XX:+G1ReservePercent
 
