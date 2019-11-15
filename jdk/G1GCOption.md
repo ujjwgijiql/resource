@@ -54,6 +54,7 @@
   - [14、-XX:+G1PrintRegionLivenessInfo](#14-xxg1printregionlivenessinfo)
   - [15、-XX:G1ReservePercent](#15-xxg1reservepercent)
   - [16、-XX:+G1SummarizeRSetStats](#16-xxg1summarizersetstats)
+  - [17、-XX:+G1TraceConcRefinement](#17-xxg1traceconcrefinement)
   
 &nbsp;&nbsp;
 &nbsp;&nbsp;
@@ -544,5 +545,28 @@ Heap
             0 (  0.0%) elements by 0 Old regions
     Region with largest amount of code roots = 127:(E)[0x00000006d1c00000,0x00000006d1e00000,0x00000006d1e00000], size = 6688B, num_elems = 105.
 5.130: Application time: 0.0016779 seconds
+
+```
+&nbsp;&nbsp;
+&nbsp;&nbsp;
+
+## 17、-XX:+G1TraceConcRefinement
+&emsp;&emsp;这是一个诊断选项。如果启动这个诊断选项，那么并行Refinement线程相关的信息会被打印。线程启动和结束时的信息都会被打印。  
+
+&emsp;&emsp;&emsp;&emsp;__垃圾收集器对应的GC线程__
+  | Garbage Collector | Worker Threads Used |
+  | --- | --- |
+  | Parallel GC | ParallelGCThreads |
+  | CMS GC      | ParallelGCThreads<BR>ConcGCThreads |
+  | G1 GC       | ParallelGCThreads<BR>ConcGCThreads<BR>G1ConcRefinementThreads |
+
+&emsp;&emsp;&emsp;&emsp;__GC线程定义__
+  | 名称 | 选项 | 作用 |
+  | --- | --- | --- |
+  | ParallelGCThread              | -XX:ParallelGCThreads       | GC的并行工作线程，专门用于独立阶段的工作，比如拷贝存活对象 |
+  | ParallelMarkingThreads        | -XX:ConcGCThreads           | 并行标记阶段的试行线程，它由一个主控(Master)线程和一些工作(Worker)线程组成，可以和应用程序并行执行 |
+  | G1ConcurrentRefinementThreads | -XX:G1ConcRefinementThreads | 和应用程序一起运行，用于更新RSet。如果ConcurrentRefinementThreads没有设置，那么默认为ParallelGCThreads + 1 |
+&emsp;&emsp;在JVM的运行选项里添加:-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log  -XX:+UseG1GC -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCApplicationConcurrentTime -XX:ConcGCThreads=1 -XX:G1HeapRegionSize=2M -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=10 -XX:+UnlockDiagnosticVMOptions -XX:+G1PrintRegionLivenessInfo -XX:G1ReservePercent=10 -XX:G1SummarizeRSetStatsPeriod=10 -XX:+G1SummarizeRSetStats -XX:+G1TraceConcRefinement
+```shell
 
 ```
