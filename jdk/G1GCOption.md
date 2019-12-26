@@ -162,7 +162,7 @@ Java HotSpot(TM) 64-Bit Server VM warning: Using the ParNew young collector with
 &nbsp;&nbsp;
 
 ## 7、-XX:+UseConcMarkSweepGC
-&emsp;&emsp;并发标记-清理（ Concurrent Mark-Sweep）GC相比其它GC都要复杂。初始标记（Initial Mark）比较简单，只有靠近类加载器的存活对象会被标记，因此停顿时间（Stop-the-world pause）比较短暂。在并发标记（Concurrent Mark）阶段，刚被确认和标记过的存活对象所关联的对象将会被跟踪和检测存活状态。此步骤的不同之处在于有多个线程并行处理此过程。在重标记（Remark）阶段，由并发标记所关联的新增或中止的对象会被检测。在最后的并发清理（Concurrent Sweep）阶段，垃圾回收过程被真正地执行。在垃圾回收执行过程中，其他线程依然可以保持并行执行。受益于CMS GC的执行方式，在GC执行期间系统中断的时间非常短暂（G1 GC 也采纳了这种设计文案）。此外，CMS GC也被称为低延迟GC，适用于所有应用对响应时间要求比较严格的场景。  
+&emsp;&emsp;并发标记-清理（Concurrent Mark-Sweep）GC相比其它GC都要复杂。初始标记（Initial Mark）比较简单，只有靠近类加载器的存活对象会被标记，因此停顿时间（Stop-the-world pause）比较短暂。在并发标记（Concurrent Mark）阶段，刚被确认和标记过的存活对象所关联的对象将会被跟踪和检测存活状态。此步骤的不同之处在于有多个线程并行处理此过程。在重标记（Remark）阶段，由并发标记所关联的新增或中止的对象会被检测。在最后的并发清理（Concurrent Sweep）阶段，垃圾回收过程被真正地执行。在垃圾回收执行过程中，其他线程依然可以保持并行执行。受益于CMS GC的执行方式，在GC执行期间系统中断的时间非常短暂（G1 GC 也采纳了这种设计文案）。此外，CMS GC也被称为低延迟GC，适用于所有应用对响应时间要求比较严格的场景。  
 &emsp;&emsp;在JVM的运行选项里添加-XX:+PrintGCDetails -XX:+PrintGCTimeStamps -verbose:gc -Xloggc:gc.log -XX:+UseConcMarkSweepGC
 ```shell
 Java HotSpot(TM) 64-Bit Server VM (25.202-b08) for windows-amd64 JRE (1.8.0_202-b08), built on Dec 15 2018 19:54:30 by "java_re" with MS VC++ 10.0 (VS2010)
