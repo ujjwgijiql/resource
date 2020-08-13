@@ -39,9 +39,10 @@ $ sudo systemctl start docker
 
 # 配置docker环境
 ```shell
-echo "172.16.20.83 registry.storm.io" >> \/etc\/hosts && echo '{"registry-mirrors": ["https://kfwkfulq.mirror.aliyuncs.com","https://2lqq34jg.mirror.aliyuncs.com","https://pee6w651.mirror.aliyuncs.com","https://registry.docker-cn.com","http://hub-mirror.c.163.com"], "storage-driver":"devicemapper","bip": "192.168.10.1/24","insecure-registries":["registry.storm.io"],"dns": ["8.8.8.8","8.8.4.4"]}' > \/etc\/docker\/daemon.json && systemctl restart docker
+$ echo "172.16.20.83 registry.storm.io" >> \/etc\/hosts && echo '{"registry-mirrors": ["https://kfwkfulq.mirror.aliyuncs.com","https://2lqq34jg.mirror.aliyuncs.com","https://pee6w651.mirror.aliyuncs.com","https://registry.docker-cn.com","http://hub-mirror.c.163.com"], "storage-driver":"devicemapper","bip": "192.168.10.1/24","insecure-registries":["registry.storm.io"],"dns": ["8.8.8.8","8.8.4.4"]}' > \/etc\/docker\/daemon.json && systemctl restart docker
 ```   
 
 ```shell
-echo '{"registry-mirrors": ["https://kfwkfulq.mirror.aliyuncs.com","https://2lqq34jg.mirror.aliyuncs.com","https://pee6w651.mirror.aliyuncs.com","https://registry.docker-cn.com","http://hub-mirror.c.163.com"],"storage-driver":"overlay","log-driver":"json-file","log-opts": {"max-size":"1024m", "max-file":"4"},"insecure-registries":["registry.storm.io"]}' > \/etc\/docker\/daemon.json
+$ echo '{"registry-mirrors": ["https://kfwkfulq.mirror.aliyuncs.com","https://2lqq34jg.mirror.aliyuncs.com","https://pee6w651.mirror.aliyuncs.com","https://registry.docker-cn.com","http://hub-mirror.c.163.com"],"storage-driver":"overlay","log-driver":"json-file","log-opts": {"max-size":"1024m", "max-file":"4"},"insecure-registries":["registry.storm.io"]}' > \/etc\/docker\/daemon.json
+$ systemctl restart docker
 ```
