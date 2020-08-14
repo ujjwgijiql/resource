@@ -1,6 +1,20 @@
 # 安装docker
 
 ## 1、 删除旧版docker组件
+卸载旧版docker
+```shell
+$ rpm -qa | grep docker
+docker-ce-19.03.12-3.el7.x86_64
+docker-ce-cli-19.03.12-3.el7.x86_64
+```
+
+分别删除
+```shell
+$ yum -y remove docker-ce-19.03.12-3.el7.x86_64
+$ yum -y remove docker-ce-cli-19.03.12-3.el7.x86_64
+```
+
+删除旧版docker组件
 ```shell
 $ sudo yum remove docker \
                   docker-client \
