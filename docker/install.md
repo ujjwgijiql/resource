@@ -42,6 +42,10 @@ sudo yum install docker-ce docker-ce-cli containerd.io
 ```shell
 $ yum list docker-ce --showduplicates | sort -r
 ```
+Install from a package
+```shell
+$ sudo yum install /path/to/package.rpm
+```
 &nbsp;&nbsp;  
 
 ## 4、启动docker
