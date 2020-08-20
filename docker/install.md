@@ -42,6 +42,7 @@ $ sudo yum install docker-ce docker-ce-cli containerd.io
 $ sudo yum install docker-ce-<VERSION_STRING> docker-ce-cli-<VERSION_STRING> containerd.io
 ```shell
 $ yum install docker-ce-17.12.1.ce docker-ce-cli-17.12.1.ce containerd.io
+$ sudo yum install docker-ce-17.12.0.ce
 ```
 
 ```shell
