@@ -53,10 +53,10 @@ Install from a package
 $ sudo yum install /path/to/package.rpm
 ```
 
-__务必做好软连接__   
-  1.查看空间最大的目录在哪里 df -Th  
-  2.创建一个docker目录，进入该目录 mkdir docker  
-  3.假设你创建的目录为/home/data/docker   ln -s /home/data/docker /var/lib/docker  
+* 务必做好软连接   
+1.查看空间最大的目录在哪里 df -Th  
+2.创建一个docker目录，进入该目录 mkdir docker  
+3.假设你创建的目录为/home/data/docker   ln -s /home/data/docker /var/lib/docker  
 &nbsp;&nbsp;  
 
 ## 4、启动docker
