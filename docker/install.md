@@ -52,7 +52,6 @@ Install from a package
 ```shell
 $ sudo yum install /path/to/package.rpm
 ```
-&nbsp;&nbsp;  
 
 * 务必做好软连接  
 1.查看空间最大的目录在哪里 df -Th  
